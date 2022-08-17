@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
+    <!-- Request legacy Bluetooth permissions on older devices. -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_ADMIN"
+        android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- Include "neverForLocation" only if you can strongly assert that
+             your app never derives physical location from Bluetooth scan results. -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation"
+        tools:targetApi="s" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="29" />
+
+    <application
+        android:name=".ZuiApp"
+        android:allowBackup="false"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
+        android:supportsRtl="false"
+        android:theme="@style/Theme.ZuiApp"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:supportsRtl">
+        <activity
+            android:name=".ui.activity.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.home.MainActivity" />
+
+        <activity android:name=".ui.camera.TakePictureActivity" />
+        <activity android:name=".ui.camera.TakeVideoActivity" />
+        <activity android:name=".ui.bluetooth.BluetoothActivity" />
+        <activity android:name=".ui.bluetooth.BluetoothLeActivity" />
+
+        <activity android:name=".ui.activity.DataBaseActivity" />
+        <activity android:name=".ui.activity.HttpActivity" />
+        <activity android:name=".ui.activity.MaterialActivity" />
+        <activity android:name=".ui.databinding.DataBindingActivity" />
+        <activity android:name=".ui.activity.PagerActivity" />
+        <activity android:name=".ui.activity.AnimationActivity" />
+        <activity android:name="com.ziojio.zuiapp.ui.activity.SwipeActivity" />
+        <activity android:name="com.ziojio.zuiapp.ui.activity.ScrollActivity" />
+        <activity android:name="com.ziojio.zuiapp.ui.activity.TouchActivity" />
+        <activity android:name="com.ziojio.zuiapp.ui.activity.InputActivity" />
+        <activity
+            android:name="com.ziojio.zuiapp.ui.web.WebViewActivity"
+            android:exported="true">
+            <intent-filter>
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.ziojio.zuiapp.ui.activity.AidlActivity" />
+        <activity android:name="com.ziojio.zuiapp.ui.edit.EditActivity" />
+        <activity
+            android:name="com.ziojio.zuiapp.ui.activity.FragmentContainerActivity"
+            android:launchMode="singleTop" />
+        <activity android:name="com.ziojio.zuiapp.ui.camera.CameraActivity" />
+        <activity android:name="com.ziojio.zuiapp.ui.activity.ViewActivity" />
+        <activity android:name="com.ziojio.zuiapp.ui.activity.RxJavaActivity" />
+        <activity android:name="com.ziojio.zuiapp.ui.camera.Camera2Activity" />
+        <activity android:name="com.ziojio.zuiapp.ui.camera.AudioActivity" />
+
+        <service
+            android:name=".service.FastInputIME"
+            android:exported="true"
+            android:label="FastInputIME"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/input_method" />
+        </service>
+        <service android:name="com.ziojio.zuiapp.service.AidlService" />
+    </application>
+
+</manifest>

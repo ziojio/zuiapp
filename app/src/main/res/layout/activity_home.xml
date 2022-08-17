@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidz.widget.TitleBar
+            android:id="@+id/titlebar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            app:showBack="false"
+            app:title="Home" />
+
+        <TextClock
+            android:id="@+id/clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_round_10dp"
+            android:divider="@drawable/selector_list_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+
+            <LinearLayout
+                android:id="@+id/execFunction"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_first"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginVertical="5dp"
+                    android:src="@drawable/ic_home" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="execFunction" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/intent"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="intent" />
+
+            <TextView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="webview" />
+
+            <TextView
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="view" />
+
+            <TextView
+                android:id="@+id/edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="edit" />
+
+            <TextView
+                android:id="@+id/compose"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="compose" />
+
+            <TextView
+                android:id="@+id/dialog"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="dialog" />
+
+            <TextView
+                android:id="@+id/animation"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="animation" />
+
+            <TextView
+                android:id="@+id/snackbar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="snackbar" />
+
+            <TextView
+                android:id="@+id/dataBinding"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="dataBinding" />
+
+            <TextView
+                android:id="@+id/rxJava"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="RxJava" />
+
+            <TextView
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_middle"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="viewpager" />
+
+            <TextView
+                android:id="@+id/http"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/selector_list_item_bg_last"
+                android:gravity="center_vertical"
+                android:paddingLeft="44dp"
+                android:text="http" />
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
