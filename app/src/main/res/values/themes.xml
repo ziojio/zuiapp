@@ -1,0 +1,27 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Base.Theme.UIApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorOnPrimary">#ffffff</item>
+
+        <item name="colorSurfaceInverse">#FFC107</item>
+        <item name="colorOnSurfaceInverse">#FFFFFF</item>
+        <item name="colorPrimaryInverse">#000000</item>
+
+        <item name="actionBarSize">@dimen/titlebarSize</item>
+        <item name="dialogCornerRadius">10dp</item>
+
+        <item name="android:windowBackground">@color/window_background_color</item>
+        <item name="android:selectableItemBackground">@drawable/selectable_item_background</item>
+
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+
+        <item name="android:overScrollMode">never</item>
+    </style>
+
+    <style name="Theme.UIApp" parent="Base.Theme.UIApp">
+    </style>
+
+</resources>

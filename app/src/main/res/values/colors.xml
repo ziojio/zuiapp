@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="blue_light">#2203A9F4</color>
+    <color name="deep_orange_100">#FFCCBC</color>
+    <color name="amber_100">#FFECB3</color>
+    <color name="primary_color">#FF9673D3</color>
+
+    <color name="window_background_color">#FFf5f5f7</color>
+    <!--  矢量图标的默认颜色  -->
+    <color name="common_icon_color">@color/gray_700</color>
+    <!--  分割线颜色 -->
+    <color name="line_color">@color/gray_300</color>
+
+    <!-- 按钮颜色 -->
+    <color name="common_button_color">@color/primary_color</color>
+    <!-- 按钮按压时的颜色 -->
+    <color name="common_button_pressed_color">#7e57c2</color>
+    <!-- 按钮禁用时的颜色 -->
+    <color name="common_button_disable_color">#D1C4E9</color>
+
+</resources>

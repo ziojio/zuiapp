@@ -1,2 +1,2 @@
-# zuiapp
+# uiapp
 Android UI
