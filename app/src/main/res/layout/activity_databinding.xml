@@ -5,11 +5,11 @@
 
         <variable
             name="handler"
-            type="com.ziojio.zuiapp.ui.databinding.DataBindingActivity.EventHandler" />
+            type="zuiapp.ui.databinding.DataBindingActivity.EventHandler" />
 
         <variable
             name="model"
-            type="com.ziojio.zuiapp.ui.databinding.DataBindingActivity.MainViewModel" />
+            type="zuiapp.ui.databinding.DataBindingActivity.MainViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

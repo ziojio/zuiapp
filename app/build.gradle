@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace 'com.ziojio.zuiapp'
+    namespace 'zuiapp'
 
     compileSdk 33
 
     defaultConfig {
-        applicationId 'com.ziojio.zuiapp'
+        applicationId 'zuiapp.android'
         minSdk 21
         targetSdk 33
         versionCode appVersionCode
@@ -73,7 +73,7 @@ dependencies {
     implementation project(path: ':compose')
 
     implementation "com.github.ziojio:androidz:0.30"
-    implementation "com.github.ziojio:httper:0.5"
+    implementation "com.github.ziojio:httper:0.10"
 
     implementation "io.reactivex.rxjava3:rxjava:3.1.5"
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'

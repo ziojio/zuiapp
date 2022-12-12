@@ -69,12 +69,12 @@
         <activity android:name=".ui.databinding.DataBindingActivity" />
         <activity android:name=".ui.activity.PagerActivity" />
         <activity android:name=".ui.activity.AnimationActivity" />
-        <activity android:name="com.ziojio.zuiapp.ui.activity.SwipeActivity" />
-        <activity android:name="com.ziojio.zuiapp.ui.activity.ScrollActivity" />
-        <activity android:name="com.ziojio.zuiapp.ui.activity.TouchActivity" />
-        <activity android:name="com.ziojio.zuiapp.ui.activity.InputActivity" />
+        <activity android:name=".ui.activity.SwipeActivity" />
+        <activity android:name=".ui.activity.ScrollActivity" />
+        <activity android:name=".ui.activity.TouchActivity" />
+        <activity android:name=".ui.activity.InputActivity" />
         <activity
-            android:name="com.ziojio.zuiapp.ui.web.WebViewActivity"
+            android:name=".ui.web.WebViewActivity"
             android:exported="true">
             <intent-filter>
                 <data android:scheme="https" />
@@ -86,16 +86,16 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity android:name="com.ziojio.zuiapp.ui.activity.AidlActivity" />
-        <activity android:name="com.ziojio.zuiapp.ui.edit.EditActivity" />
+        <activity android:name=".ui.activity.AidlActivity" />
+        <activity android:name=".ui.edit.EditActivity" />
         <activity
-            android:name="com.ziojio.zuiapp.ui.activity.FragmentContainerActivity"
+            android:name=".ui.activity.FragmentContainerActivity"
             android:launchMode="singleTop" />
-        <activity android:name="com.ziojio.zuiapp.ui.camera.CameraActivity" />
-        <activity android:name="com.ziojio.zuiapp.ui.activity.ViewActivity" />
-        <activity android:name="com.ziojio.zuiapp.ui.activity.RxJavaActivity" />
-        <activity android:name="com.ziojio.zuiapp.ui.camera.Camera2Activity" />
-        <activity android:name="com.ziojio.zuiapp.ui.camera.AudioActivity" />
+        <activity android:name=".ui.camera.CameraActivity" />
+        <activity android:name=".ui.activity.ViewActivity" />
+        <activity android:name=".ui.activity.RxJavaActivity" />
+        <activity android:name=".ui.camera.Camera2Activity" />
+        <activity android:name=".ui.camera.AudioActivity" />
 
         <service
             android:name=".service.FastInputIME"
@@ -109,7 +109,7 @@
                 android:name="android.view.im"
                 android:resource="@xml/input_method" />
         </service>
-        <service android:name="com.ziojio.zuiapp.service.AidlService" />
+        <service android:name=".service.AidlService" />
     </application>
 
 </manifest>
