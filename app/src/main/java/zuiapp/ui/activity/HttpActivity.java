@@ -31,7 +31,7 @@ public class HttpActivity extends BaseActivity {
     }
 
     private void request(String url) {
-        httper.get().url(url).request(new HttpCallback<String>() {
+        httper.get(url).request(new HttpCallback<String>() {
             @Override
             public void onResult(HttpResponse<String> httpResponse) {
                 Timber.d("onResult: " + httpResponse);
