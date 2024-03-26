@@ -12,9 +12,7 @@ import java.io.File;
 public class WebViewUtil {
 
     /**
-     * 应用的 {@link WebView} 设置
-     *
-     * @param webview
+     * 应用通用 {@link WebView} 设置
      */
     @SuppressLint("SetJavaScriptEnabled")
     public static void initWebView(WebView webview) {
@@ -39,9 +37,9 @@ public class WebViewUtil {
         return new WebViewAssetLoader.Builder()
                 .addPathHandler("/assets/", new WebViewAssetLoader.AssetsPathHandler(context))
                 .addPathHandler("/res/", new WebViewAssetLoader.ResourcesPathHandler(context))
-                .addPathHandler("/public/", new WebViewAssetLoader.InternalStoragePathHandler(context,
-                        new File(context.getCacheDir(), "webpublic")))
-                .setDomain("hummer.didi.cn")
+                .addPathHandler("/file/", new WebViewAssetLoader.InternalStoragePathHandler(context,
+                        new File(context.getCacheDir(), "public")))
+                .setDomain("localhost")
                 .setHttpAllowed(true)
                 .build();
     }

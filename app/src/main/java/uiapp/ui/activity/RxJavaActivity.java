@@ -2,9 +2,6 @@ package uiapp.ui.activity;
 
 import android.os.Bundle;
 
-import uiapp.databinding.ActivityRxjavaBinding;
-import uiapp.ui.base.BaseActivity;
-
 import org.reactivestreams.Subscription;
 
 import java.util.concurrent.TimeUnit;
@@ -37,14 +34,15 @@ import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
+import uiapp.databinding.ActivityRxjavaBinding;
+import uiapp.ui.base.BaseActivity;
 
 public class RxJavaActivity extends BaseActivity {
-    private ActivityRxjavaBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityRxjavaBinding.inflate(getLayoutInflater());
+        ActivityRxjavaBinding binding = ActivityRxjavaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         binding.test.setOnClickListener(v -> test());
@@ -62,7 +60,7 @@ public class RxJavaActivity extends BaseActivity {
     private void test() {
         Observable.create(new ObservableOnSubscribe<String>() {
                     @Override
-                    public void subscribe(@androidx.annotation.NonNull ObservableEmitter<String> emitter) throws Throwable {
+                    public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
                         for (int i = 1; i <= 10; i++) {
                             emitter.onNext(i + "");
                             Thread.sleep(20);
@@ -75,7 +73,7 @@ public class RxJavaActivity extends BaseActivity {
                     public ObservableSource<String> apply(String s) throws Throwable {
                         return Observable.create(new ObservableOnSubscribe<String>() {
                             @Override
-                            public void subscribe(@androidx.annotation.NonNull ObservableEmitter<String> emitter) throws Throwable {
+                            public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
                                 emitter.onNext("a" + s);
                                 emitter.onComplete();
                             }
@@ -84,7 +82,7 @@ public class RxJavaActivity extends BaseActivity {
                 })
                 .mergeWith(Maybe.create(new MaybeOnSubscribe<String>() {
                     @Override
-                    public void subscribe(@androidx.annotation.NonNull MaybeEmitter<String> emitter) throws Throwable {
+                    public void subscribe(@NonNull MaybeEmitter<String> emitter) throws Throwable {
                         Timber.d("mergeWith");
                         emitter.onSuccess("c1");
                         Thread.sleep(20);
@@ -92,14 +90,14 @@ public class RxJavaActivity extends BaseActivity {
                 }))
                 .concatWith(Maybe.create(new MaybeOnSubscribe<String>() {
                     @Override
-                    public void subscribe(@androidx.annotation.NonNull MaybeEmitter<String> emitter) throws Throwable {
+                    public void subscribe(@NonNull MaybeEmitter<String> emitter) throws Throwable {
                         Timber.d("concatWith");
                         emitter.onSuccess("b");
                     }
                 }))
                 .mergeWith(Maybe.create(new MaybeOnSubscribe<String>() {
                     @Override
-                    public void subscribe(@androidx.annotation.NonNull MaybeEmitter<String> emitter) throws Throwable {
+                    public void subscribe(@NonNull MaybeEmitter<String> emitter) throws Throwable {
                         Timber.d("mergeWith");
                         emitter.onSuccess("c2");
                     }
@@ -108,12 +106,12 @@ public class RxJavaActivity extends BaseActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableObserver<>() {
                     @Override
-                    public void onNext(@androidx.annotation.NonNull String s) {
+                    public void onNext(@NonNull String s) {
                         Timber.d("onNext " + s);
                     }
 
                     @Override
-                    public void onError(@androidx.annotation.NonNull Throwable e) {
+                    public void onError(@NonNull Throwable e) {
                         Timber.e("onError " + e);
                     }
 

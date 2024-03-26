@@ -18,10 +18,6 @@ import uiapp.R;
  * desc   : 按照比例显示的 FrameLayout
  */
 public final class RatioFrameLayout extends FrameLayout {
-
-    /**
-     * 宽高比例
-     */
     private float widthRatio;
     private float heightRatio;
 
@@ -65,7 +61,7 @@ public final class RatioFrameLayout extends FrameLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         if (widthRatio != 0 && heightRatio != 0) {
 
-            float sizeRatio = getRatio();
+            float sizeRatio = widthRatio / heightRatio;
 
             ViewGroup.LayoutParams layoutParams = getLayoutParams();
 
@@ -99,29 +95,4 @@ public final class RatioFrameLayout extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-
-    public float getWidthRatio() {
-        return widthRatio;
-    }
-
-    public float getHeightRatio() {
-        return heightRatio;
-    }
-
-    /**
-     * 获取宽高比
-     */
-    public float getRatio() {
-        return widthRatio / heightRatio;
-    }
-
-    /**
-     * 设置宽高比
-     */
-    public void setRatio(float widthRatio, float heightRatio) {
-        this.widthRatio = widthRatio;
-        this.heightRatio = heightRatio;
-        requestLayout();
-        invalidate();
-    }
 }

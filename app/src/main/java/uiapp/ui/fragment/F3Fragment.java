@@ -7,53 +7,24 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import uiapp.databinding.ActivityFuncBinding;
-import uiapp.ui.base.BaseFragment;
+import uiapp.ui.base.MultiFragment;
 
-import androidz.util.OnDebouncingClickListener;
-import timber.log.Timber;
-
-public class F3Fragment extends BaseFragment {
-    private ActivityFuncBinding binding;
+public class F3Fragment extends MultiFragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = ActivityFuncBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
+        ActivityFuncBinding binding = ActivityFuncBinding.inflate(inflater, container, false);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        onBinding();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    private void onBinding() {
         binding.titlebar.setTitle(getClass().getSimpleName());
-        binding.titlebar.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int count = getParentFragmentManager().getBackStackEntryCount();
-                Timber.d("backStackEntryCount=" + count);
-                getParentFragmentManager().popBackStack();
-            }
+        binding.titlebar.setLeftClickListener(v -> pop());
+
+        binding.execFunction.setOnClickListener(v -> {
+            start(new F4Fragment());
         });
-        binding.execFunction.setOnClickListener(new OnDebouncingClickListener() {
-            @Override
-            public void onDebouncingClick(View v) {
-                Timber.d("execFunction");
-                MultiFragmentActivity activity = (MultiFragmentActivity) requireActivity();
-                activity.showFragment(new F4Fragment(), null, true);
-            }
-        });
+
+        return binding.getRoot();
     }
 
 }

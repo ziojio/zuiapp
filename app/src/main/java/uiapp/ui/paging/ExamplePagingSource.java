@@ -1,9 +1,8 @@
 package uiapp.ui.paging;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -24,33 +23,27 @@ class ExamplePagingSource extends RxPagingSource<Integer, ItemData> {
         mQuery = query;
     }
 
-    @NotNull
+    @NonNull
     @Override
-    public Single<LoadResult<Integer, ItemData>> loadSingle(@NotNull LoadParams<Integer> params) {
+    public Single<LoadResult<Integer, ItemData>> loadSingle(@NonNull LoadParams<Integer> params) {
         // Start refresh at page 1 if undefined.
-        final Integer pageNumber = params.getKey() == null ? 1 : params.getKey();
+        final int pageNumber = params.getKey() == null ? 1 : params.getKey();
 
         return Single.create(new SingleOnSubscribe<LoadResult<Integer, ItemData>>() {
                     @Override
                     public void subscribe(@NonNull SingleEmitter<LoadResult<Integer, ItemData>> emitter) throws Throwable {
                         List<ItemData> itemDataList = new ArrayList<>();
                         for (int i = 0; i <= 9; i++) {
-                            itemDataList.add(new ItemData(mQuery + " [" + pageNumber + "]: " + i));
+                            itemDataList.add(new ItemData(mQuery + " " + pageNumber + ": " + i));
                         }
-                        if (pageNumber == 1) {
-                            emitter.onSuccess(new LoadResult.Page<>(
-                                    itemDataList,
-                                    null,
-                                    pageNumber + 1));
-                        } else {
-                            Completable.timer(3, TimeUnit.SECONDS)
-                                    .subscribeOn(Schedulers.io())
-                                    .subscribe(() ->
-                                            emitter.onSuccess(new LoadResult.Page<>(
-                                                    itemDataList,
-                                                    null, // Only paging forward.
-                                                    pageNumber + 1)));
-                        }
+
+                        Completable.timer(new Random().nextInt(3), TimeUnit.SECONDS)
+                                .subscribeOn(Schedulers.io())
+                                .subscribe(() ->
+                                        emitter.onSuccess(new LoadResult.Page<>(
+                                                itemDataList,
+                                                null, // Only paging forward.
+                                                pageNumber + 1)));
                     }
                 })
                 .subscribeOn(Schedulers.io())
@@ -59,7 +52,7 @@ class ExamplePagingSource extends RxPagingSource<Integer, ItemData> {
 
     @Nullable
     @Override
-    public Integer getRefreshKey(@NotNull PagingState<Integer, ItemData> state) {
+    public Integer getRefreshKey(@NonNull PagingState<Integer, ItemData> state) {
         // Try to find the page key of the closest page to anchorPosition, from
         // either the prevKey or the nextKey, but you need to handle nullability
         // here:

@@ -1,9 +1,7 @@
 package uiapp.ui.paging;
 
 import android.os.Bundle;
-
-import uiapp.databinding.ActivityPaging3Binding;
-import uiapp.ui.base.BaseActivity;
+import android.os.Handler;
 
 import androidx.lifecycle.ViewModelKt;
 import androidx.paging.Pager;
@@ -11,10 +9,15 @@ import androidx.paging.PagingConfig;
 import androidx.paging.PagingData;
 import androidx.paging.rxjava3.PagingRx;
 import androidx.recyclerview.widget.ConcatAdapter;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
 import kotlinx.coroutines.CoroutineScope;
+import uiapp.databinding.ActivityPaging3Binding;
+import uiapp.di.MainHandler;
+import uiapp.ui.base.BaseActivity;
+
 
 public class Paging3Activity extends BaseActivity {
 
@@ -27,12 +30,37 @@ public class Paging3Activity extends BaseActivity {
         PagingViewModel model = getActivityViewModel(PagingViewModel.class);
 
         ItemPagingAdapter pagingAdapter = new ItemPagingAdapter();
-        ConcatAdapter adapter = pagingAdapter.withLoadStateFooter(new ExampleLoadStateAdapter(v -> pagingAdapter.retry()));
-        binding.recyclerview.setAdapter(adapter);
+        ExampleLoadStateAdapter footerAdapter = new ExampleLoadStateAdapter(v -> pagingAdapter.retry());
+        ConcatAdapter concatAdapter = pagingAdapter.withLoadStateFooter(footerAdapter);
+        binding.recyclerview.setAdapter(concatAdapter);
+
+        // pagingAdapter.addLoadStateListener(new Function1<>() {
+        //     @Override
+        //     public Unit invoke(CombinedLoadStates combinedLoadStates) {
+        //         postDelayed(() -> {
+        //             if (combinedLoadStates.getRefresh() instanceof LoadState.NotLoading) {
+        //                 binding.swipeRefreshLayout.setRefreshing(false);
+        //             }
+        //         }, 100);
+        //         return null;
+        //     }
+        // });
+
+        Handler handler = new MainHandler();
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                pagingAdapter.refresh();
+
+                handler.postDelayed(() -> {
+                    binding.swipeRefreshLayout.setRefreshing(false);
+                }, 2000);
+            }
+        });
 
         Pager<Integer, ItemData> pager = new Pager<>(
                 new PagingConfig(10),
-                () -> new ExamplePagingSource("Paging"));
+                () -> new ExamplePagingSource("Page"));
 
         Flowable<PagingData<ItemData>> flowable = PagingRx.getFlowable(pager);
         CoroutineScope viewModelScope = ViewModelKt.getViewModelScope(model);

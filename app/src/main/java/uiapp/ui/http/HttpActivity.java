@@ -1,26 +1,34 @@
 package uiapp.ui.http;
 
 import android.os.Bundle;
+import android.util.Log;
 
-import java.io.IOException;
+import com.google.gson.JsonElement;
 
+import java.util.Locale;
+
+import androidx.annotation.NonNull;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.observers.DisposableObserver;
 import okhttp3.OkHttpClient;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import uiapp.data.api.HttpService;
+import uiapp.data.api.RxHttpService;
+import uiapp.data.repository.HttpRepository;
+import uiapp.data.response.BaseObserver;
+import uiapp.data.response.HttpCallback;
 import uiapp.databinding.ActivityHttpBinding;
 import uiapp.ui.base.BaseActivity;
 
 public class HttpActivity extends BaseActivity {
     private ActivityHttpBinding binding;
 
-    private HttpService apiService;
+    private RxHttpService apiService;
+    private BaseObserver<JsonElement> observer;
+    private Call<JsonElement> call;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +36,29 @@ public class HttpActivity extends BaseActivity {
         binding = ActivityHttpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        binding.input.setText("http://www.baidu.com");
+        binding.input.setText("https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json");
         binding.request.setOnClickListener(v -> {
             String text = binding.input.getText().toString();
             if (text.isBlank()) {
                 showToast("text is Blank");
             } else {
                 request(text);
+            }
+        });
+        binding.rxRequest.setOnClickListener(v -> {
+            String text = binding.input.getText().toString();
+            if (text.isBlank()) {
+                showToast("text is Blank");
+            } else {
+                rxrequest(text);
+            }
+        });
+        binding.cancel.setOnClickListener(v -> {
+            if (observer != null && !observer.isDisposed()) {
+                observer.dispose();
+            }
+            if (call != null && !call.isCanceled()) {
+                call.cancel();
             }
         });
 
@@ -48,34 +72,62 @@ public class HttpActivity extends BaseActivity {
                 .client(client)
                 .build();
 
-        apiService = retrofit.create(HttpService.class);
-
+        apiService = retrofit.create(RxHttpService.class);
     }
 
     private void request(String url) {
-        apiService.get(url)
+        call = HttpRepository.getInstance().getJson(url, new HttpCallback<>() {
+            @Override
+            public void onResponse(@NonNull Call<JsonElement> call, Response<JsonElement> response) {
+                Log.d("TAG", "onResponse: " + response);
+                super.onResponse(call, response);
+            }
+
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull Throwable throwable) {
+                Log.d("TAG", "onFailure: " + throwable);
+                super.onFailure(call, throwable);
+            }
+
+            @Override
+            public void onSuccess(JsonElement body) {
+                binding.text.setText(body.toString());
+            }
+
+            @Override
+            public void onError(int errCode, String errMsg) {
+                binding.text.setText(String.format(Locale.getDefault(), "code=%d, msg=%s", errCode, errMsg));
+            }
+        });
+    }
+
+    private void rxrequest(String url) {
+        observer = new BaseObserver<>() {
+            @Override
+            public void onNext(@NonNull JsonElement jsonElement) {
+                Log.d("TAG", "onNext: " + jsonElement);
+                try {
+                    String result = jsonElement.toString();
+                    binding.text.setText(result);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d("TAG", "onError: " + e);
+                super.onError(e);
+            }
+
+            @Override
+            public void onError(int errCode, String errMsg) {
+                binding.text.setText(errMsg);
+            }
+        };
+        apiService.getJson(url)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<>() {
-                    @Override
-                    public void onNext(@NonNull ResponseBody body) {
-                        try {
-                            String result = body.string();
-                            binding.text.setText(result);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        binding.text.setText(e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+                .subscribe(observer);
     }
 
 }

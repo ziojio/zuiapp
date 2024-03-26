@@ -1,29 +1,33 @@
-package uiapp.ui.home;
+package uiapp.ui.fragment.homepage;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import javax.inject.Inject;
+
 import androidz.app.LoadingDialog;
-import androidz.util.ClickUtil;
-import androidz.util.OnDebouncingClickListener;
 import composex.ui.ComposeActivity;
+import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
 import uiapp.R;
 import uiapp.databinding.ActivityHomeBinding;
+import uiapp.di.MainHandler;
 import uiapp.ui.activity.AnimationActivity;
 import uiapp.ui.activity.DataBaseActivity;
+import uiapp.ui.activity.KotlinActivity;
 import uiapp.ui.activity.RxJavaActivity;
 import uiapp.ui.activity.WebSocketActivity;
 import uiapp.ui.base.BaseFragment;
@@ -31,16 +35,14 @@ import uiapp.ui.databinding.DataBindingActivity;
 import uiapp.ui.edit.EditActivity;
 import uiapp.ui.http.HttpActivity;
 import uiapp.ui.paging.Paging3Activity;
-import uiapp.util.DebugLifecycleObserver;
+import uiapp.util.KeyboardWatcher;
 import uiapp.web.WebActivity;
 
+@AndroidEntryPoint
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getLifecycle().addObserver(new DebugLifecycleObserver());
-    }
+    @Inject
+    MainHandler mHandler;
 
     @Nullable
     @Override
@@ -55,17 +57,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
         Arrays.asList(binding.snackbar, binding.webview,
                 binding.database, binding.dialog,
-                binding.compose, binding.http,
+                binding.compose, binding.http, binding.ktx,
                 binding.animation, binding.dataBinding,
-                binding.edit, binding.rxJava,
+                binding.edit, binding.rxJava, binding.paging,
                 binding.webSocket).forEach(v -> v.setOnClickListener(this));
 
-        binding.execFunction.setOnClickListener((OnDebouncingClickListener) v -> {
+        binding.execFunction.setOnClickListener(v -> {
             Timber.d("execFunction");
-            // logBuildInfo();
-            startActivity(new Intent(requireContext(), Paging3Activity.class));
+            logBuildInfo();
+
+            if (v instanceof TextView tv) {
+                tv.append("...");
+            }
         });
-        binding.edit.setOnClickListener((OnDebouncingClickListener) v -> {
+        binding.edit.setOnClickListener(v -> {
             binding.keyboard
                     .setEditText(binding.editText)
                     .setNineGridNumber()
@@ -77,39 +82,51 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (popupWindow == null) {
-                    popupWindow = new HomePopupWindow(requireContext());
+                    popupWindow = new HomePopupWindow(requireActivity());
                 }
                 popupWindow.showPopupWindow(v);
                 // popupWindow.showPopupWindow(100, 100);
+            }
+        });
+
+        KeyboardWatcher.with(requireActivity()).setListener(new KeyboardWatcher.SoftKeyboardStateListener() {
+            @Override
+            public void onSoftKeyboardOpened(int keyboardHeight) {
+                Timber.d("onSoftKeyboardOpened: keyboardHeight=" + keyboardHeight);
+            }
+
+            @Override
+            public void onSoftKeyboardClosed() {
+                Timber.d("onSoftKeyboardClosed");
             }
         });
     }
 
     @Override
     public void onClick(View v) {
-        if (!ClickUtil.isSingleClick(v)) {
-            return;
-        }
-        Context context = requireContext();
         int id = v.getId();
         if (id == R.id.webview) {
-            startActivity(new Intent(context, WebActivity.class));
+            startActivity(new Intent(requireActivity(), WebActivity.class));
         } else if (id == R.id.compose) {
-            startActivity(new Intent(context, ComposeActivity.class));
+            startActivity(new Intent(requireActivity(), ComposeActivity.class));
+        } else if (id == R.id.ktx) {
+            startActivity(new Intent(requireActivity(), KotlinActivity.class));
         } else if (id == R.id.database) {
-            startActivity(new Intent(context, DataBaseActivity.class));
+            startActivity(new Intent(requireActivity(), DataBaseActivity.class));
         } else if (id == R.id.http) {
-            startActivity(new Intent(context, HttpActivity.class));
+            startActivity(new Intent(requireActivity(), HttpActivity.class));
         } else if (id == R.id.webSocket) {
-            startActivity(new Intent(context, WebSocketActivity.class));
+            startActivity(new Intent(requireActivity(), WebSocketActivity.class));
         } else if (id == R.id.dataBinding) {
-            startActivity(new Intent(context, DataBindingActivity.class));
+            startActivity(new Intent(requireActivity(), DataBindingActivity.class));
         } else if (id == R.id.animation) {
-            startActivity(new Intent(context, AnimationActivity.class));
+            startActivity(new Intent(requireActivity(), AnimationActivity.class));
         } else if (id == R.id.rxJava) {
-            startActivity(new Intent(context, RxJavaActivity.class));
+            startActivity(new Intent(requireActivity(), RxJavaActivity.class));
         } else if (id == R.id.edit) {
-            startActivity(new Intent(context, EditActivity.class));
+            startActivity(new Intent(requireActivity(), EditActivity.class));
+        } else if (id == R.id.paging) {
+            startActivity(new Intent(requireActivity(), Paging3Activity.class));
         } else if (id == R.id.snackbar) {
             showSnackbar(v);
         } else if (id == R.id.dialog) {
@@ -142,7 +159,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 Timber.d(field.getName() + ": " + field.get(null));
             }
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            Timber.e(e);
         }
     }
 

@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <!-- Request legacy Bluetooth permissions on older devices. -->
     <uses-permission
@@ -22,6 +21,9 @@
         tools:targetApi="s" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
@@ -29,11 +31,9 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:name=".UIApp"
+        android:name="uiapp.UIApp"
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -46,30 +46,16 @@
         tools:targetApi="s">
 
         <activity
-            android:name=".ui.home.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:name="uiapp.ui.activity.MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.camera.TakePictureActivity" />
-        <activity android:name=".ui.camera.TakeVideoActivity" />
-        <activity android:name=".ui.camera.CameraActivity" />
-        <activity android:name=".ui.camera.Camera2Activity" />
-        <activity android:name=".ui.camera.AudioActivity" />
-        <activity android:name=".ui.bluetooth.BluetoothActivity" />
-        <activity android:name=".ui.bluetooth.BluetoothLeActivity" />
-
-        <activity android:name=".ui.activity.DataBaseActivity" />
-        <activity android:name=".ui.databinding.DataBindingActivity" />
-        <activity android:name=".ui.activity.AnimationActivity" />
-        <activity android:name=".ui.activity.RxJavaActivity" />
-        <activity android:name=".ui.http.HttpActivity" />
         <activity
-            android:name=".web.WebActivity"
+            android:name="uiapp.web.WebActivity"
             android:exported="true">
             <intent-filter>
                 <data android:scheme="https" />
@@ -81,20 +67,30 @@
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.fragment.MultiFragmentActivity" />
+        <activity android:name="uiapp.ui.base.MultiFragmentActivity" />
+        <activity android:name="uiapp.ui.activity.DataBaseActivity" />
+        <activity android:name="uiapp.ui.activity.RxJavaActivity" />
+        <activity android:name="uiapp.ui.activity.AnimationActivity" />
+        <activity android:name="uiapp.ui.activity.WebSocketActivity" />
+        <activity android:name="uiapp.ui.activity.WaterMarkActivity" />
+        <activity android:name="uiapp.ui.activity.AidlActivity" />
 
-        <activity android:name=".ui.edit.EditActivity" />
+        <activity android:name="uiapp.ui.camera.TakePictureActivity" />
+        <activity android:name="uiapp.ui.camera.TakeVideoActivity" />
+        <activity android:name="uiapp.ui.camera.CameraActivity" />
+        <activity android:name="uiapp.ui.camera.Camera2Activity" />
+        <activity android:name="uiapp.ui.camera.AudioActivity" />
+        <activity android:name="uiapp.ui.bluetooth.BluetoothActivity" />
+        <activity android:name="uiapp.ui.bluetooth.BluetoothLeActivity" />
+        <activity android:name="uiapp.ui.databinding.DataBindingActivity" />
+        <activity android:name="uiapp.ui.http.HttpActivity" />
+        <activity android:name="uiapp.ui.edit.EditActivity" />
+        <activity android:name="uiapp.ui.paging.Paging3Activity" />
+        <activity android:name="uiapp.ui.activity.KotlinActivity" />
 
-        <activity android:name=".ui.activity.WebSocketActivity" />
-        <activity android:name=".ui.paging.Paging3Activity" />
-        <activity android:name=".ui.activity.WaterMarkActivity" />
-
-        <activity android:name=".ui.activity.AidlActivity" />
-
-        <service android:name=".service.AidlService" />
-
+        <service android:name="uiapp.service.AidlService" />
         <service
-            android:name=".service.FastInputIME"
+            android:name="uiapp.service.FastInputIME"
             android:exported="true"
             android:label="FastInputIME"
             android:permission="android.permission.BIND_INPUT_METHOD">

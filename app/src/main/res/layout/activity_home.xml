@@ -9,7 +9,7 @@
     <uiapp.widget.TitleBar
         android:id="@+id/titlebar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/titlebarSize"
+        android:layout_height="?actionBarSize"
         app:layout_constraintTop_toTopOf="parent"
         app:leftVisible="false"
         app:title="Home" />
@@ -85,6 +85,15 @@
                     android:text="compose" />
 
                 <TextView
+                    android:id="@+id/ktx"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="?android:selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="44dp"
+                    android:text="ktx" />
+
+                <TextView
                     android:id="@+id/dataBinding"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
@@ -119,6 +128,15 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="44dp"
                     android:text="webview" />
+
+                <TextView
+                    android:id="@+id/paging"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="?android:selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="44dp"
+                    android:text="paging" />
 
                 <TextView
                     android:id="@+id/rxJava"

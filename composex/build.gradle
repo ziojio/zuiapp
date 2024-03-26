@@ -3,6 +3,10 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+kotlin {
+    jvmToolchain(11)
+}
+
 android {
     namespace 'com.ziojio.composex'
     compileSdk appCompileSdk
@@ -23,16 +27,11 @@ android {
     buildFeatures {
         compose true
     }
+
     composeOptions {
-        kotlinCompilerExtensionVersion = '1.4.8'
+        kotlinCompilerExtensionVersion = '1.5.12'
     }
-    kotlinOptions {
-        jvmTarget = '11'
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
+
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'

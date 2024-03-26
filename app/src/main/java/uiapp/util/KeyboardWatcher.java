@@ -1,5 +1,6 @@
 package uiapp.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.graphics.Rect;
@@ -19,14 +20,12 @@ import androidx.annotation.Nullable;
  * time   : 2019/07/04
  * desc   : 软键盘监听类
  */
-public final class KeyboardWatcher implements
-        ViewTreeObserver.OnGlobalLayoutListener,
-        Application.ActivityLifecycleCallbacks {
+public final class KeyboardWatcher implements ViewTreeObserver.OnGlobalLayoutListener {
 
     private Activity mActivity;
     private View mContentView;
     @Nullable
-    private SoftKeyboardStateListener mListeners;
+    private SoftKeyboardStateListener mListener;
     private boolean mSoftKeyboardOpened;
     private int mStatusBarHeight;
 
@@ -38,17 +37,56 @@ public final class KeyboardWatcher implements
         mActivity = activity;
         mContentView = activity.findViewById(Window.ID_ANDROID_CONTENT);
 
+        Application.ActivityLifecycleCallbacks activityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks() {
+            public void onActivityCreated(@NonNull Activity activity, Bundle savedInstanceState) {
+            }
+
+            @Override
+            public void onActivityStarted(@NonNull Activity activity) {
+            }
+
+            @Override
+            public void onActivityResumed(@NonNull Activity activity) {
+            }
+
+            @Override
+            public void onActivityPaused(@NonNull Activity activity) {
+            }
+
+            @Override
+            public void onActivityStopped(@NonNull Activity activity) {
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
+            }
+
+            @Override
+            public void onActivityDestroyed(@NonNull Activity activity) {
+                if (mActivity == activity) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        mActivity.unregisterActivityLifecycleCallbacks(this);
+                    } else {
+                        mActivity.getApplication().unregisterActivityLifecycleCallbacks(this);
+                    }
+                    mContentView.getViewTreeObserver().removeOnGlobalLayoutListener(KeyboardWatcher.this);
+
+                    mActivity = null;
+                    mContentView = null;
+                    mListener = null;
+                }
+            }
+        };
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            mActivity.registerActivityLifecycleCallbacks(this);
+            mActivity.registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         } else {
-            mActivity.getApplication().registerActivityLifecycleCallbacks(this);
+            mActivity.getApplication().registerActivityLifecycleCallbacks(activityLifecycleCallbacks);
         }
         mContentView.getViewTreeObserver().addOnGlobalLayoutListener(this);
 
-        // 获取 status_bar_height 资源的 ID
+        @SuppressLint("InternalInsetResource")
         int resourceId = mActivity.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            //根据资源 ID 获取响应的尺寸值
             mStatusBarHeight = mActivity.getResources().getDimensionPixelSize(resourceId);
         }
     }
@@ -62,67 +100,25 @@ public final class KeyboardWatcher implements
         final int heightDiff = mContentView.getRootView().getHeight() - (r.bottom - r.top);
         if (!mSoftKeyboardOpened && heightDiff > mContentView.getRootView().getHeight() / 4) {
             mSoftKeyboardOpened = true;
-            if (mListeners == null) {
+            if (mListener == null) {
                 return;
             }
             if ((mActivity.getWindow().getAttributes().flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != WindowManager.LayoutParams.FLAG_FULLSCREEN) {
-                mListeners.onSoftKeyboardOpened(heightDiff - mStatusBarHeight);
+                mListener.onSoftKeyboardOpened(heightDiff - mStatusBarHeight);
             } else {
-                mListeners.onSoftKeyboardOpened(heightDiff);
+                mListener.onSoftKeyboardOpened(heightDiff);
             }
         } else if (mSoftKeyboardOpened && heightDiff < mContentView.getRootView().getHeight() / 4) {
             mSoftKeyboardOpened = false;
-            if (mListeners == null) {
+            if (mListener == null) {
                 return;
             }
-            mListeners.onSoftKeyboardClosed();
+            mListener.onSoftKeyboardClosed();
         }
     }
 
-    /**
-     * 设置软键盘弹出监听
-     */
     public void setListener(@Nullable SoftKeyboardStateListener listener) {
-        mListeners = listener;
-    }
-
-    public void onActivityCreated(@NonNull Activity activity, Bundle savedInstanceState) {
-    }
-
-    @Override
-    public void onActivityStarted(@NonNull Activity activity) {
-    }
-
-    @Override
-    public void onActivityResumed(@NonNull Activity activity) {
-    }
-
-    @Override
-    public void onActivityPaused(@NonNull Activity activity) {
-    }
-
-    @Override
-    public void onActivityStopped(@NonNull Activity activity) {
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
-    }
-
-    @Override
-    public void onActivityDestroyed(@NonNull Activity activity) {
-        if (mActivity == activity) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                mActivity.unregisterActivityLifecycleCallbacks(this);
-            } else {
-                mActivity.getApplication().unregisterActivityLifecycleCallbacks(this);
-            }
-            mContentView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-            mActivity = null;
-            mContentView = null;
-            mListeners = null;
-        }
+        mListener = listener;
     }
 
     /**

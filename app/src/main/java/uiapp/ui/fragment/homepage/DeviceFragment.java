@@ -1,4 +1,4 @@
-package uiapp.ui.home;
+package uiapp.ui.fragment.homepage;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +11,9 @@ import androidx.annotation.Nullable;
 
 import uiapp.databinding.ActivityDeviceBinding;
 import uiapp.ui.activity.DataBaseActivity;
+import uiapp.ui.base.BaseFragment;
 import uiapp.ui.bluetooth.BluetoothActivity;
 import uiapp.ui.bluetooth.BluetoothLeActivity;
-import uiapp.ui.base.BaseFragment;
 import uiapp.ui.camera.AudioActivity;
 import uiapp.ui.camera.Camera2Activity;
 import uiapp.ui.camera.CameraActivity;
@@ -37,6 +37,11 @@ public class DeviceFragment extends BaseFragment {
         binding.video.setOnClickListener(v -> startActivity(new Intent(requireContext(), TakeVideoActivity.class)));
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
 
 }

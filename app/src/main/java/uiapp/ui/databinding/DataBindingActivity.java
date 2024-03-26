@@ -3,13 +3,11 @@ package uiapp.ui.databinding;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.databinding.DataBindingUtil;
+import timber.log.Timber;
 import uiapp.R;
 import uiapp.databinding.ActivityDatabindingBinding;
 import uiapp.ui.base.BaseActivity;
-
-import androidx.databinding.DataBindingUtil;
-import androidz.util.OnDebouncingClickListener;
-import timber.log.Timber;
 
 
 public class DataBindingActivity extends BaseActivity {
@@ -25,11 +23,8 @@ public class DataBindingActivity extends BaseActivity {
 
         binding.titlebar.setTitle("DataBinding");
 
-        binding.execFunction.setOnClickListener(new OnDebouncingClickListener() {
-            @Override
-            public void onDebouncingClick(View v) {
-                Timber.d("execFunction ");
-            }
+        binding.execFunction.setOnClickListener(v -> {
+            Timber.d("execFunction ");
         });
     }
 

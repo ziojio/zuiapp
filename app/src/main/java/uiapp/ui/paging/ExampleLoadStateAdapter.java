@@ -1,28 +1,47 @@
 package uiapp.ui.paging;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import org.jetbrains.annotations.NotNull;
-
+import androidx.annotation.NonNull;
 import androidx.paging.LoadState;
 import androidx.paging.LoadStateAdapter;
+import androidx.recyclerview.widget.RecyclerView;
+import uiapp.databinding.HolderLoadStateBinding;
 
-class ExampleLoadStateAdapter extends LoadStateAdapter<LoadStateViewHolder> {
-    private View.OnClickListener mRetryCallback;
+public class ExampleLoadStateAdapter extends LoadStateAdapter<ExampleLoadStateAdapter.LoadStateViewHolder> {
+    private final View.OnClickListener mRetryCallback;
 
-    ExampleLoadStateAdapter(View.OnClickListener retryCallback) {
+    ExampleLoadStateAdapter(@NonNull View.OnClickListener retryCallback) {
         mRetryCallback = retryCallback;
     }
 
-    @NotNull
+    @NonNull
     @Override
-    public LoadStateViewHolder onCreateViewHolder(@NotNull ViewGroup parent, @NotNull LoadState loadState) {
-        return new LoadStateViewHolder(parent, mRetryCallback);
+    public LoadStateViewHolder onCreateViewHolder(@NonNull ViewGroup parent, @NonNull LoadState loadState) {
+        return new LoadStateViewHolder(HolderLoadStateBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NotNull LoadStateViewHolder holder, @NotNull LoadState loadState) {
-        holder.bind(loadState);
+    public void onBindViewHolder(@NonNull LoadStateViewHolder holder, @NonNull LoadState loadState) {
+        HolderLoadStateBinding binding = HolderLoadStateBinding.bind(holder.itemView);
+
+        if (loadState instanceof LoadState.Error) {
+            LoadState.Error loadStateError = (LoadState.Error) loadState;
+            binding.errorMsg.setText(loadStateError.getError().getMessage());
+        }
+        binding.errorMsg.setVisibility(loadState instanceof LoadState.Error ? View.VISIBLE : View.GONE);
+        binding.progressBar.setVisibility(loadState instanceof LoadState.Loading ? View.VISIBLE : View.GONE);
+        binding.retryButton.setVisibility(loadState instanceof LoadState.Error ? View.VISIBLE : View.GONE);
+        binding.retryButton.setOnClickListener(mRetryCallback);
+    }
+
+    public static class LoadStateViewHolder extends RecyclerView.ViewHolder {
+
+        LoadStateViewHolder(@NonNull HolderLoadStateBinding binding) {
+            super(binding.getRoot());
+        }
     }
 }
