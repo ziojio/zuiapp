@@ -7,51 +7,27 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import androidz.util.OnDebouncingClickListener;
 import uiapp.databinding.ActivityFuncBinding;
 import uiapp.ui.base.BaseFragment;
-
-import androidz.util.OnDebouncingClickListener;
-import timber.log.Timber;
+import uiapp.ui.base.MultiFragmentActivity;
 
 public class F2Fragment extends BaseFragment {
-    private ActivityFuncBinding binding;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = ActivityFuncBinding.inflate(inflater, container, false);
-        return binding.getRoot();
-    }
+        MultiFragmentActivity activity = (MultiFragmentActivity) requireActivity();
+        ActivityFuncBinding binding = ActivityFuncBinding.inflate(inflater, container, false);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        onBinding();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
-
-    private void onBinding() {
         binding.titlebar.setTitle(getClass().getSimpleName());
-        binding.titlebar.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getParentFragmentManager().popBackStack();
-            }
+        binding.titlebar.setLeftClickListener(v -> activity.pop());
+
+        binding.execFunction.setOnClickListener((OnDebouncingClickListener) v -> {
+            activity.start(new F3Fragment());
         });
-        binding.execFunction.setOnClickListener(new OnDebouncingClickListener() {
-            @Override
-            public void onDebouncingClick(View v) {
-                Timber.d("execFunction");
-                MultiFragmentActivity activity = (MultiFragmentActivity) requireActivity();
-                activity.showFragment(new F3Fragment(), null, true);
-            }
-        });
+
+        return binding.getRoot();
     }
 
 }

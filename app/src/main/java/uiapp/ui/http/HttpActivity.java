@@ -1,9 +1,12 @@
 package uiapp.ui.http;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.IOException;
+import java.util.Locale;
 
+import androidz.util.ThreadUtil;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.observers.DisposableObserver;
@@ -13,14 +16,16 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import uiapp.data.api.HttpService;
+import uiapp.data.api.RxHttpService;
+import uiapp.data.repository.HttpRepository;
+import uiapp.data.response.HttpCallback;
 import uiapp.databinding.ActivityHttpBinding;
 import uiapp.ui.base.BaseActivity;
 
 public class HttpActivity extends BaseActivity {
     private ActivityHttpBinding binding;
 
-    private HttpService apiService;
+    private RxHttpService apiService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +53,21 @@ public class HttpActivity extends BaseActivity {
                 .client(client)
                 .build();
 
-        apiService = retrofit.create(HttpService.class);
+        apiService = retrofit.create(RxHttpService.class);
+    }
 
+    private void get(String url) {
+        HttpRepository.getInstance().getString(url, new HttpCallback<>() {
+            @Override
+            public void onSuccess(String s) {
+                binding.text.setText(s);
+            }
+
+            @Override
+            public void onError(int errCode, String errMsg) {
+                binding.text.setText(String.format(Locale.getDefault(), "code=%d, msg=%s", errCode, errMsg));
+            }
+        });
     }
 
     private void request(String url) {
@@ -58,6 +76,7 @@ public class HttpActivity extends BaseActivity {
                 .subscribe(new DisposableObserver<>() {
                     @Override
                     public void onNext(@NonNull ResponseBody body) {
+                        Log.d("TAG", "isMainThread: " + ThreadUtil.isMainThread());
                         try {
                             String result = body.string();
                             binding.text.setText(result);

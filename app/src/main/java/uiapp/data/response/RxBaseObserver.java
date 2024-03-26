@@ -13,7 +13,7 @@ import java.net.UnknownHostException;
 import io.reactivex.rxjava3.observers.DisposableObserver;
 import retrofit2.HttpException;
 
-public abstract class BaseObserver<T> extends DisposableObserver<DataResult<T>> {
+public abstract class RxBaseObserver<T> extends DisposableObserver<DataResult<T>> {
 
     /**
      * 解析数据失败
@@ -35,7 +35,7 @@ public abstract class BaseObserver<T> extends DisposableObserver<DataResult<T>> 
 
     @Override
     public void onNext(DataResult<T> response) {
-        // 业务相关的返回code
+        // 业务相关的返回 code
         if (response.code == 0) {
             onSuccess(response.data);
         } else {
@@ -47,19 +47,19 @@ public abstract class BaseObserver<T> extends DisposableObserver<DataResult<T>> 
     public void onError(Throwable e) {
         dismissDialog();
         if (e instanceof HttpException) {
-            //   HTTP错误
+            // HTTP错误
             onException(BAD_NETWORK);
         } else if (e instanceof ConnectException
                 || e instanceof UnknownHostException) {
-            //   连接错误
+            // 连接错误
             onException(CONNECT_ERROR);
         } else if (e instanceof InterruptedIOException) {
-            //  连接超时
+            // 连接超时
             onException(CONNECT_TIMEOUT);
         } else if (e instanceof JsonParseException
                 || e instanceof JSONException
                 || e instanceof ParseException) {
-            //  解析错误
+            // 解析错误
             onException(PARSE_ERROR);
         } else {
             if (e != null) {
@@ -83,8 +83,6 @@ public abstract class BaseObserver<T> extends DisposableObserver<DataResult<T>> 
                 break;
             case PARSE_ERROR:
                 onError(PARSE_ERROR, "解析数据失败");
-                break;
-            default:
                 break;
         }
     }

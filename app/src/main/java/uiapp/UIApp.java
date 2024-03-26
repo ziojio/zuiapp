@@ -1,18 +1,19 @@
 package uiapp;
 
 import android.app.Application;
+import android.content.pm.ApplicationInfo;
 
 import com.tencent.mmkv.MMKV;
-import uiapp.database.room.AppDB;
-import uiapp.database.room.entity.TrackLog;
-import uiapp.log.FileLogTree;
-import uiapp.log.LogUtil;
 
 import java.io.File;
 import java.util.Date;
 
 import androidz.util.AppUtil;
 import timber.log.Timber;
+import uiapp.database.room.AppDB;
+import uiapp.database.room.entity.TrackLog;
+import uiapp.log.FileLogTree;
+import uiapp.log.LogUtil;
 
 public class UIApp extends Application {
     static UIApp app;
@@ -41,5 +42,8 @@ public class UIApp extends Application {
         LogUtil.saveLog(new TrackLog("onCreate", ""));
     }
 
+    public static boolean debuggable() {
+        return (app.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+    }
 }
 

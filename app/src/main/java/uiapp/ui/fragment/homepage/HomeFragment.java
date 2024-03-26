@@ -1,6 +1,6 @@
-package uiapp.ui.home;
+package uiapp.ui.fragment.homepage;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import java.util.Arrays;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidz.app.LoadingDialog;
-import androidz.util.ClickUtil;
 import androidz.util.OnDebouncingClickListener;
 import composex.ui.ComposeActivity;
 import timber.log.Timber;
@@ -27,14 +26,15 @@ import uiapp.ui.activity.DataBaseActivity;
 import uiapp.ui.activity.RxJavaActivity;
 import uiapp.ui.activity.WebSocketActivity;
 import uiapp.ui.base.BaseFragment;
+import uiapp.ui.base.MultiFragmentActivity;
 import uiapp.ui.databinding.DataBindingActivity;
 import uiapp.ui.edit.EditActivity;
+import uiapp.ui.fragment.F2Fragment;
 import uiapp.ui.http.HttpActivity;
-import uiapp.ui.paging.Paging3Activity;
 import uiapp.util.DebugLifecycleObserver;
 import uiapp.web.WebActivity;
 
-public class HomeFragment extends BaseFragment implements View.OnClickListener {
+public class HomeFragment extends BaseFragment implements OnDebouncingClickListener {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +63,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         binding.execFunction.setOnClickListener((OnDebouncingClickListener) v -> {
             Timber.d("execFunction");
             // logBuildInfo();
-            startActivity(new Intent(requireContext(), Paging3Activity.class));
+            // startActivity(new Intent(requireActivity(), Paging3Activity.class));
+            MultiFragmentActivity.start(requireActivity(), F2Fragment.class);
         });
         binding.edit.setOnClickListener((OnDebouncingClickListener) v -> {
             binding.keyboard
@@ -77,7 +78,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 if (popupWindow == null) {
-                    popupWindow = new HomePopupWindow(requireContext());
+                    popupWindow = new HomePopupWindow(requireActivity());
                 }
                 popupWindow.showPopupWindow(v);
                 // popupWindow.showPopupWindow(100, 100);
@@ -86,11 +87,8 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View v) {
-        if (!ClickUtil.isSingleClick(v)) {
-            return;
-        }
-        Context context = requireContext();
+    public void onDebouncingClick(View v) {
+        Activity context = requireActivity();
         int id = v.getId();
         if (id == R.id.webview) {
             startActivity(new Intent(context, WebActivity.class));
@@ -113,7 +111,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         } else if (id == R.id.snackbar) {
             showSnackbar(v);
         } else if (id == R.id.dialog) {
-            new LoadingDialog(requireActivity()).show();
+            new LoadingDialog(context).show();
         }
     }
 

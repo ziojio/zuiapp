@@ -18,8 +18,8 @@ android {
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += [
-                        "room.schemaLocation"  : "$projectDir/schemas",
-                        "room.incremental"     : "true",
+                        "room.schemaLocation": "$projectDir/schemas",
+                        "room.incremental"   : "true",
                 ]
             }
         }
@@ -99,9 +99,9 @@ dependencies {
 
     implementation("com.squareup.okhttp3:logging-interceptor:3.14.9")
 
-    implementation 'com.squareup.retrofit2:adapter-rxjava3:2.10.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.10.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.10.0'
+    implementation('com.squareup.retrofit2:retrofit:2.10.0')
+    implementation('com.squareup.retrofit2:converter-gson:2.10.0')
+    implementation('com.squareup.retrofit2:adapter-rxjava3:2.10.0')
 
     // Google Android
     implementation 'com.google.android.flexbox:flexbox:3.0.0'

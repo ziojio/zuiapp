@@ -1,15 +1,16 @@
-package uiapp.ui.home;
+package uiapp.ui.activity;
 
 import android.os.Bundle;
 import android.widget.RadioGroup;
-
-import uiapp.databinding.ActivityMainBinding;
-import uiapp.ui.base.BaseActivity;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import uiapp.databinding.ActivityMainBinding;
+import uiapp.ui.base.BaseActivity;
+import uiapp.ui.fragment.homepage.DeviceFragment;
+import uiapp.ui.fragment.homepage.HomeFragment;
 
 public class MainActivity extends BaseActivity {
 
