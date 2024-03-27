@@ -9,7 +9,7 @@
         <item name="colorOnSurfaceInverse">#FFFFFF</item>
         <item name="colorPrimaryInverse">#000000</item>
 
-        <item name="actionBarSize">@dimen/titlebarSize</item>
+        <item name="actionBarSize">@dimen/dp_48</item>
         <item name="dialogCornerRadius">10dp</item>
 
         <item name="android:windowBackground">@color/window_background_color</item>
