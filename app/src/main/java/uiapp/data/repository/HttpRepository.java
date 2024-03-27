@@ -1,13 +1,15 @@
 package uiapp.data.repository;
 
+import androidx.annotation.NonNull;
+
 import java.io.IOException;
 
-import androidx.annotation.NonNull;
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.HttpException;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -41,16 +43,24 @@ public class HttpRepository {
     public void getString(@NonNull String url, @NonNull HttpCallback<String> callback) {
         httpService.get(url).enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    callback.onSuccess(response.body().string());
-                } catch (IOException e) {
-                    callback.onFailure(call, e);
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    final String result;
+                    final ResponseBody body = response.body();
+                    try {
+                        result = body != null ? body.string() : "";
+                    } catch (IOException e) {
+                        callback.onFailure(call, e);
+                        return;
+                    }
+                    callback.onSuccess(result);
+                } else {
+                    callback.onFailure(call, new HttpException(response));
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable throwable) {
                 callback.onFailure(call, throwable);
             }
         });
