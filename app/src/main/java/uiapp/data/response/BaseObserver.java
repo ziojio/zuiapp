@@ -12,13 +12,10 @@ import java.net.UnknownHostException;
 
 import javax.net.ssl.SSLException;
 
-import androidx.annotation.NonNull;
-import retrofit2.Call;
-import retrofit2.Callback;
+import io.reactivex.rxjava3.observers.DisposableObserver;
 import retrofit2.HttpException;
-import retrofit2.Response;
 
-public abstract class HttpCallback<T> implements Callback<T> {
+public abstract class BaseObserver<T> extends DisposableObserver<T> {
     public static final int CONNECT_ERROR = 1001;
     public static final int CONNECT_TIMEOUT = 1002;
     public static final int NETWORK_ERROR = 1003;
@@ -28,22 +25,13 @@ public abstract class HttpCallback<T> implements Callback<T> {
      */
     public static final int PARSE_ERROR = 1005;
 
-
     @Override
-    public void onResponse(@NonNull Call<T> call, Response<T> response) {
-        if (response.isSuccessful()) {
-            onSuccess(response.body());
-        } else {
-            onError(new HttpException(response));
-        }
+    protected void onStart() {
+        showLoading();
     }
 
     @Override
-    public void onFailure(@NonNull Call call, @NonNull Throwable throwable) {
-        onError(throwable);
-    }
-
-    private void onError(Throwable e) {
+    public void onError(Throwable e) {
         if (e instanceof ConnectException || e instanceof UnknownHostException) {
             onError(CONNECT_ERROR, "连接错误");
         } else if (e instanceof InterruptedIOException) {
@@ -66,8 +54,20 @@ public abstract class HttpCallback<T> implements Callback<T> {
         }
     }
 
-    public abstract void onSuccess(T t);
+    @Override
+    public void onComplete() {
+        dismissDialog();
+    }
 
     public abstract void onError(int errCode, String errMsg);
+
+
+    public void showLoading() {
+
+    }
+
+    public void dismissDialog() {
+
+    }
 
 }

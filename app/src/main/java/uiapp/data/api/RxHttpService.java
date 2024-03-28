@@ -1,5 +1,7 @@
 package uiapp.data.api;
 
+import com.google.gson.JsonElement;
+
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +27,9 @@ public interface RxHttpService {
 
     @GET
     Observable<ResponseBody> get(@Url String url);
+
+    @GET
+    Observable<JsonElement> getJson(@Url String url);
 
     @GET
     Observable<ResponseBody> get(@Url String url, @QueryMap Map<String, String> map);

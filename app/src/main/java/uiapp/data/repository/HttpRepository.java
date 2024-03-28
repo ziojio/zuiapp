@@ -1,9 +1,8 @@
 package uiapp.data.repository;
 
+import com.google.gson.JsonElement;
+
 import androidx.annotation.NonNull;
-
-import java.io.IOException;
-
 import okhttp3.OkHttpClient;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -45,11 +44,11 @@ public class HttpRepository {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    final String result;
-                    final ResponseBody body = response.body();
+                    String result;
                     try {
+                        ResponseBody body = response.body();
                         result = body != null ? body.string() : "";
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         callback.onFailure(call, e);
                         return;
                     }
@@ -64,6 +63,10 @@ public class HttpRepository {
                 callback.onFailure(call, throwable);
             }
         });
+    }
+
+    public void getJson(@NonNull String url, @NonNull HttpCallback<JsonElement> callback) {
+        httpService.getJson(url).enqueue(callback);
     }
 
 }
