@@ -3,13 +3,14 @@ package uiapp.ui.base;
 import android.content.res.Resources;
 import android.widget.Toast;
 
-import uiapp.UIApp;
+import androidx.appcompat.app.AppCompatActivity;
 
-import androidz.app.AppActivity;
 import androidz.util.AdaptScreenUtils;
 import androidz.util.ScreenUtil;
+import uiapp.UIApp;
 
-public class BaseActivity extends AppActivity {
+
+public class BaseActivity extends AppCompatActivity {
 
     @Override
     public Resources getResources() {

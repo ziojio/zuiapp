@@ -86,7 +86,7 @@
         <activity android:name="uiapp.ui.http.HttpActivity" />
         <activity android:name="uiapp.ui.edit.EditActivity" />
         <activity android:name="uiapp.ui.paging.Paging3Activity" />
-        <activity android:name="uiapp.ui.activity.KotlinActivity" />
+        <activity android:name="uiapp.ui.ktx.KotlinActivity" />
 
         <service android:name="uiapp.service.AidlService" />
         <service

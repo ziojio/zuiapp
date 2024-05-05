@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import androidx.lifecycle.ViewModelKt;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.paging.Pager;
 import androidx.paging.PagingConfig;
 import androidx.paging.PagingData;
 import androidx.paging.rxjava3.PagingRx;
 import androidx.recyclerview.widget.ConcatAdapter;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Consumer;
@@ -27,7 +29,7 @@ public class Paging3Activity extends BaseActivity {
         ActivityPaging3Binding binding = ActivityPaging3Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        PagingViewModel model = getActivityViewModel(PagingViewModel.class);
+        PagingViewModel model = new ViewModelProvider(this).get(PagingViewModel.class);
 
         ItemPagingAdapter pagingAdapter = new ItemPagingAdapter();
         ExampleLoadStateAdapter footerAdapter = new ExampleLoadStateAdapter(v -> pagingAdapter.retry());

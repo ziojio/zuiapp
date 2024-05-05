@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+
 import timber.log.Timber;
 import uiapp.R;
 import uiapp.databinding.ActivityDatabindingBinding;
@@ -17,7 +19,7 @@ public class DataBindingActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         ActivityDatabindingBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_databinding);
         binding.setLifecycleOwner(this);
-        BindingViewModel bindingViewModel = getActivityViewModel(BindingViewModel.class);
+        BindingViewModel bindingViewModel = new ViewModelProvider(this).get(BindingViewModel.class);
         binding.setModel(bindingViewModel);
         binding.setHandler(new EventHandler());
 

@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidz.app.AppActivity;
+
 import uiapp.ui.activity.MainActivity;
 import uiapp.ui.activity.SplashActivity;
 
@@ -16,7 +16,7 @@ import uiapp.ui.activity.SplashActivity;
  * time   : 2020/11/29
  * desc   : 重启应用
  */
-public final class RestartActivity extends AppActivity {
+public final class RestartActivity extends Activity {
 
     public static void start(Context context) {
         Intent intent = new Intent(context, RestartActivity.class);
