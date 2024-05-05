@@ -8,7 +8,7 @@ kotlin {
 }
 
 android {
-    namespace 'com.ziojio.composex'
+    namespace 'composex'
     compileSdk appCompileSdk
 
     defaultConfig {

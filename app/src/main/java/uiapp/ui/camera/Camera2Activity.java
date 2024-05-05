@@ -35,9 +35,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.Observer;
 
-import uiapp.databinding.ActivityCamera2Binding;
-import uiapp.ui.base.BaseActivity;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -46,6 +43,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import timber.log.Timber;
+import uiapp.databinding.ActivityCamera2Binding;
+import uiapp.ui.base.BaseActivity;
 
 public class Camera2Activity extends BaseActivity implements SurfaceHolder.Callback, ImageReader.OnImageAvailableListener, TextureView.SurfaceTextureListener {
     private ActivityCamera2Binding binding;
@@ -70,7 +69,7 @@ public class Camera2Activity extends BaseActivity implements SurfaceHolder.Callb
         }
         binding = ActivityCamera2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.titlebar.setTitle("相机");
+        binding.titlebar.title.setText("相机");
         mCameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         mHandlerThread = new HandlerThread("Camera");
         mHandlerThread.start();

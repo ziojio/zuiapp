@@ -5,8 +5,6 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,22 +13,19 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
+
 public class FileLogTree extends Timber.DebugTree implements Handler.Callback {
-    private final File file;
     private SimpleDateFormat dateFormat;
     private FileWriter fileWriter;
     private HandlerThread handlerThread;
     private Handler handler;
 
     public FileLogTree(File file) {
-        this.file = Objects.requireNonNull(file);
-        initLog();
-    }
-
-    private void initLog() {
         try {
+            Objects.requireNonNull(file);
             if (!file.exists()) {
                 if (!file.getParentFile().exists()) {
                     file.getParentFile().mkdirs();
@@ -38,76 +33,73 @@ public class FileLogTree extends Timber.DebugTree implements Handler.Callback {
                 file.createNewFile();
             }
             fileWriter = new FileWriter(file, true);
-
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.ROOT);
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
             handlerThread = new HandlerThread("FileLog");
             handlerThread.start();
-            handler = new Handler(handlerThread.getLooper(), this);
         } catch (Exception e) {
-            Log.e("FileLogTree", "initLog Failed file[" + file + "]", e);
+            Log.e("FileLogTree", "initLog Failed [" + file + "]", e);
         }
-    }
-
-    public void setDateFormat(SimpleDateFormat dateFormat) {
-        this.dateFormat = Objects.requireNonNull(dateFormat);
     }
 
     @Override
     protected void log(int priority, String tag, @NonNull String message, Throwable t) {
-        if (handler != null) {
+        if (checkHandler()) {
             String log = dateFormat.format(new Date()) + " " + typeInfo(priority) + " " + tag + ": " + message + "\n";
             handler.sendMessage(Message.obtain(handler, 0, log));
+            // handler.post(() -> {
+            //     if (fileWriter != null) {
+            //         try {
+            //             fileWriter.write(log);
+            //             fileWriter.flush();
+            //         } catch (IOException ignored) {
+            //         }
+            //     }
+            // });
         }
     }
 
     @Override
     public boolean handleMessage(@NonNull Message msg) {
-        try {
-            // long start = SystemClock.elapsedRealtime();
-            final String log = (String) msg.obj;
-            if (fileWriter != null) {
-                fileWriter.write(log);
+        if (fileWriter != null) {
+            try {
+                fileWriter.write((String) msg.obj);
                 fileWriter.flush();
+            } catch (IOException ignored) {
             }
-            // long time = SystemClock.elapsedRealtime() - start;
-            // Log.d("FileLogTree", "write length=" + log.length() + " time=" + time);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return true;
     }
 
-    public void exit() {
-        handler = null;
+    public void release() {
         if (handlerThread != null) {
-            handlerThread.quitSafely();
+            handlerThread.quit();
             handlerThread = null;
+            handler = null;
         }
         if (fileWriter != null) {
             try {
                 fileWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ignored) {
             }
             fileWriter = null;
         }
     }
 
-    private String typeInfo(int priority) {
-        switch (priority) {
-            case Log.VERBOSE:
-                return "V";
-            case Log.INFO:
-                return "I";
-            case Log.WARN:
-                return "W";
-            case Log.ERROR:
-                return "E";
-            case Log.ASSERT:
-                return "A";
-            case Log.DEBUG:
-            default:
-                return "D";
+    private boolean checkHandler() {
+        if (handler == null && (handlerThread != null && handlerThread.isAlive())) {
+            handler = new Handler(handlerThread.getLooper(), this);
         }
+        return handler != null;
+    }
+
+    private String typeInfo(int priority) {
+        return switch (priority) {
+            case Log.VERBOSE -> "V";
+            case Log.INFO -> "I";
+            case Log.WARN -> "W";
+            case Log.ERROR -> "E";
+            case Log.ASSERT -> "A";
+            default -> "D";
+        };
     }
 }

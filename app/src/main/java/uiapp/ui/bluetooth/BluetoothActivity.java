@@ -11,22 +11,24 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.hjq.permissions.OnPermissionCallback;
 import com.hjq.permissions.XXPermissions;
+
+import java.util.List;
+
+import timber.log.Timber;
 import uiapp.R;
 import uiapp.databinding.ActivityBluetoothBinding;
 import uiapp.databinding.AdapterBtdeviceBinding;
 import uiapp.ui.adapter.BaseListAdapter;
 import uiapp.ui.adapter.BaseViewHolder;
 import uiapp.ui.base.BaseActivity;
-
-import java.util.List;
-
-import timber.log.Timber;
 
 @SuppressLint("MissingPermission")
 public class BluetoothActivity extends BaseActivity {
@@ -52,7 +54,7 @@ public class BluetoothActivity extends BaseActivity {
                 Timber.d("onStart: ");
 
                 BTAdapter adapter = (BTAdapter) binding.recyclerview.getAdapter();
-                adapter.refreshList(null);
+                adapter.updateList(null);
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 Timber.d("onStop: ");
 
@@ -141,30 +143,31 @@ public class BluetoothActivity extends BaseActivity {
         }
     }
 
-    static class BTAdapter extends BaseListAdapter<BluetoothDevice> {
-        static final DiffUtil.ItemCallback<BluetoothDevice> callback = new DiffUtil.ItemCallback<>() {
-            @Override
-            public boolean areItemsTheSame(@NonNull BluetoothDevice oldItem, @NonNull BluetoothDevice newItem) {
-                return oldItem.equals(newItem);
-            }
+    private static class BTAdapter extends BaseListAdapter<BluetoothDevice, BaseViewHolder> {
+        BTAdapter() {
+            super(new DiffUtil.ItemCallback<>() {
+                @Override
+                public boolean areItemsTheSame(@NonNull BluetoothDevice oldItem, @NonNull BluetoothDevice newItem) {
+                    return oldItem.equals(newItem);
+                }
 
-            @Override
-            public boolean areContentsTheSame(@NonNull BluetoothDevice oldItem, @NonNull BluetoothDevice newItem) {
-                return oldItem.equals(newItem);
-            }
-        };
+                @Override
+                public boolean areContentsTheSame(@NonNull BluetoothDevice oldItem, @NonNull BluetoothDevice newItem) {
+                    return oldItem.equals(newItem);
+                }
+            });
+        }
 
-        protected BTAdapter() {
-            super(callback);
+        @NonNull
+        @Override
+        public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            return new BaseViewHolder(LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.adapter_btdevice, parent, false));
         }
 
         @Override
-        protected int getLayoutRes(int viewType) {
-            return R.layout.adapter_btdevice;
-        }
-
-        @Override
-        public void onBindItem(BluetoothDevice device, BaseViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull BaseViewHolder holder, int position) {
+            BluetoothDevice device = getItem(position);
             AdapterBtdeviceBinding binding = AdapterBtdeviceBinding.bind(holder.itemView);
             binding.name.setText(device.getName() == null ? "unknown" : device.getName());
             binding.address.setText(device.getAddress());

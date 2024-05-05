@@ -2,7 +2,6 @@ package uiapp.ui.edit;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.Dialog;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.Build;
@@ -12,12 +11,13 @@ import android.view.MotionEvent;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
-
-import uiapp.databinding.FastKeyboardBinding;
+import androidx.appcompat.app.AppCompatDialog;
 
 import timber.log.Timber;
+import uiapp.databinding.FastKeyboardBinding;
 
-public class FastKeyboardDialog extends Dialog {
+
+public class FastKeyboardDialog extends AppCompatDialog {
     private final EditText editText;
 
     @SuppressLint("ClickableViewAccessibility")

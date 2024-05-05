@@ -5,21 +5,8 @@ import androidx.annotation.NonNull;
 import com.didi.hummer.context.HummerContext;
 import com.didi.hummer.core.engine.JSValue;
 
-import hummerx.Hummerx;
-
 
 public class HummerActivity extends com.didi.hummer.HummerActivity {
-
-    @Override
-    protected void renderHummer() {
-        super.renderHummer();
-    }
-
-    @Override
-    protected void initHummerRegister(HummerContext context) {
-        super.initHummerRegister(context);
-        Hummerx.registerComponents(context);
-    }
 
     /**
      * 页面渲染成功的回调

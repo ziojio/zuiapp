@@ -68,4 +68,6 @@
     <string name="btn_clear_watermark">Clear watermarks</string>
     <string name="btn_load_marked">Load picture</string>
     <string name="et_hint">Add a text for invisible watermark</string>
+    <string name="home">Home</string>
+    <string name="function">Function</string>
 </resources>

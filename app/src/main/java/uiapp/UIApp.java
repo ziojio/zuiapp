@@ -2,13 +2,18 @@ package uiapp;
 
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
+import android.os.SystemClock;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.util.Date;
 
-import androidz.util.AppUtil;
+import androidz.App;
+import androidz.AppUtil;
 import dagger.hilt.android.HiltAndroidApp;
 import timber.log.Timber;
 import uiapp.database.room.AppDB;
@@ -16,35 +21,49 @@ import uiapp.database.room.entity.TrackLog;
 import uiapp.log.FileLogTree;
 import uiapp.log.LogUtil;
 
+
 @HiltAndroidApp
 public class UIApp extends Application {
-    static UIApp app;
+    private static UIApp uiApp;
     AppDB appDB;
 
     public static UIApp getApp() {
-        return app;
+        return uiApp;
     }
 
     public static AppDB getDB() {
-        return app.appDB;
+        return uiApp.appDB;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        app = this;
-        appDB = AppDB.create(this);
-        MMKV.initialize(this);
+        uiApp = this;
 
-        if (AppUtil.isDebuggable()) {
-            Timber.plant(new Timber.DebugTree());
+        Log.d("UIApp", "onCreate " + this);
+        long start = SystemClock.elapsedRealtime();
+        if (AppUtil.isDebuggable(this)) {
             Timber.plant(new FileLogTree(new File(LogUtil.getLogDir(this), LogUtil.getLogFileName(new Date()))));
+            Timber.plant(new Timber.DebugTree() {
+                @Override
+                protected void log(int priority, String tag, @NonNull String message, Throwable t) {
+                    LogUtil.saveLog(new TrackLog(tag, message));
+                    super.log(priority, tag, message, t);
+                }
+            });
         }
-        LogUtil.saveLog(new TrackLog("onCreate", ""));
+        MMKV.initialize(this);
+        appDB = AppDB.create(this);
+
+        long time = SystemClock.elapsedRealtime() - start;
+        Timber.d("init cost time " + time + "ms");
+
+        Timber.d("onCreate " + App.INSTANCE);
+        Timber.d("onCreate " + App.INSTANCE.isDebuggable());
     }
 
     public static boolean debuggable() {
-        return (app.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        return (uiApp.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
     }
 }
 
