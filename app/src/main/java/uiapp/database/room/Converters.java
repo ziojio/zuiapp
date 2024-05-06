@@ -21,8 +21,7 @@ public class Converters {
     public Date toDate(String date) {
         try {
             return FORMAT.parse(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        } catch (ParseException ignored) {
         }
         return null;
     }

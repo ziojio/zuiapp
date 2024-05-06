@@ -2,6 +2,7 @@ package uiapp;
 
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.tencent.mmkv.MMKV;
@@ -36,25 +37,26 @@ public class UIApp extends Application {
     public void onCreate() {
         super.onCreate();
         uiApp = this;
-        appDB = AppDB.create(this);
-        MMKV.initialize(this);
-
-        if (AppUtil.isDebuggable(this)) {
-            Timber.plant(new Timber.DebugTree());
-            Timber.plant(new FileLogTree(new File(LogUtil.getLogDir(this), LogUtil.getLogFileName(new Date()))));
-        }
-        LogUtil.saveLog(new TrackLog("onCreate", ""));
 
         Log.d("UIApp", "onCreate " + this);
-        App.attachApplication(this);
+        long start = SystemClock.elapsedRealtime();
+        if (AppUtil.isDebuggable(this)) {
+            Timber.plant(new FileLogTree(new File(LogUtil.getLogDir(this), LogUtil.getLogFileName(new Date()))));
+            Timber.plant(new Timber.DebugTree());
+        }
+        MMKV.initialize(this);
+        appDB = AppDB.create(this);
 
+        long time = SystemClock.elapsedRealtime() - start;
+        LogUtil.saveLog(new TrackLog("UIApp", "init cost time " + time + "ms"));
+
+        App.attachApplication(this);
         Log.d("UIApp", "onCreate " + App.INSTANCE);
         Log.d("UIApp", "onCreate " + App.getAttachApplication());
         Log.d("UIApp", "onCreate " + App.isDebuggable());
         Log.d("UIApp", "onCreate " + App.INSTANCE.getApplicationInfo());
         Log.d("UIApp", "onCreate " + App.getPackageInfo());
         Log.d("UIApp", "onCreate " + App.globalData);
-
     }
 
     public static boolean debuggable() {

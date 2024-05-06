@@ -26,7 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
-import hummerx.Hummerx;
 
 @Component("HMDialog")
 public class HummerDialog extends DialogFragment implements IFullLifeCycle {
@@ -173,7 +172,6 @@ public class HummerDialog extends DialogFragment implements IFullLifeCycle {
      */
     protected void initHummer() {
         hmRender = new HummerRender(hmContainer);
-        initHummerRegister(hmRender.getHummerContext());
         if (navPage != null) {
             hmRender.setJsPageInfo(navPage);
         }
@@ -202,10 +200,6 @@ public class HummerDialog extends DialogFragment implements IFullLifeCycle {
         } else {
             hmRender.renderWithAssets(navPage.url);
         }
-    }
-
-    protected void initHummerRegister(HummerContext context) {
-        Hummerx.registerComponents(context);
     }
 
     /**

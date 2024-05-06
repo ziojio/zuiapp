@@ -11,6 +11,7 @@ import com.didi.hummer.adapter.imageloader.impl.DefaultImageLoaderAdapter;
 import com.didi.hummer.adapter.navigator.impl.DefaultNavigatorAdapter;
 import com.didi.hummer.adapter.storage.impl.DefaultStorageAdapter;
 import com.didi.hummer.context.HummerContext;
+import com.didi.hummer.context.HummerRegister;
 import com.didi.hummer.core.exception.ExceptionCallback;
 import com.didi.hummer.register.HummerRegister$$hummerx;
 
@@ -45,6 +46,12 @@ public class Hummerx {
                 // .setLocationAdapter(new DefaultLocationAdapter())
                 // 自定义持久化存储（可选）
                 .setStorageAdapter(new DefaultStorageAdapter())
+                .addHummerRegister(new HummerRegister() {
+                    @Override
+                    public void register(HummerContext hummerContext) {
+                        HummerRegister$$hummerx.init(hummerContext);
+                    }
+                })
                 .builder();
         Hummer.init(context, config);
     }

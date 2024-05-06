@@ -4,6 +4,6 @@ package uiapp.database;
 public class DBConfig {
 
     public static final String DB_NAME = "test";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 3;
 
 }
