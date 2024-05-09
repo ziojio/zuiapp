@@ -1,8 +1,6 @@
 package uiapp.ui.ktx
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
 import timber.log.Timber
@@ -21,7 +19,6 @@ class KotlinActivity : BaseActivity() {
         ViewModelProvider(this).get(KtxViewModel::class.java)
     }
 
-    @SuppressLint("LogNotTimber")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityKtBinding.inflate(layoutInflater)
@@ -31,23 +28,20 @@ class KotlinActivity : BaseActivity() {
         binding.ktx.setOnClickListener {
             when (n++ % 2) {
                 0 -> {
-                    Log.d(TAG, "onCreate: ${viewModel.date.value}")
                     Timber.d("onCreate: ${viewModel.date.value}")
                 }
                 1 -> {
-                    Log.d(TAG, "onCreate: ${viewModel3.date.value}")
                     Timber.d("onCreate: ${viewModel3.date.value}")
                 }
             }
         }
 
         App.globalData["a"] = "A"
-        Log.d(TAG, "onCreate: $App")
-        Log.d(TAG, "onCreate: ${App.attachApplication}")
-        Log.d(TAG, "onCreate: ${App.isDebuggable}")
-        Log.d(TAG, "onCreate: ${App.applicationInfo}")
-        Log.d(TAG, "onCreate: ${App.packageInfo}")
-        Log.d(TAG, "onCreate: ${App.globalData}")
+        Timber.d("onCreate: $App")
+        Timber.d("onCreate: ${App.isDebuggable}")
+        Timber.d("onCreate: ${App.applicationInfo}")
+        Timber.d("onCreate: ${App.packageInfo}")
+        Timber.d("onCreate: ${App.globalData}")
 
     }
 

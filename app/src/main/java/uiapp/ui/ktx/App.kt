@@ -8,20 +8,21 @@ import android.content.pm.PackageInfo
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.content.res.Configuration
 import android.os.Build
+import timber.log.Timber
 
 
+/**
+ * Delegate Application
+ */
 object App : Application() {
     private lateinit var app: Application
 
-    @JvmField
-    val globalData = mutableMapOf<String, Any>()
+    val globalData: MutableMap<String, Any> = mutableMapOf()
 
-    @JvmStatic
     val isDebuggable: Boolean by lazy {
         applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE == 2
     }
 
-    @JvmStatic
     val packageInfo: PackageInfo by lazy {
         val info = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             packageManager.getPackageInfo(packageName, PackageInfoFlags.of(0))
@@ -33,10 +34,6 @@ object App : Application() {
         return@lazy info
     }
 
-    @JvmStatic
-    val attachApplication: Application by lazy { app }
-
-    @JvmStatic
     fun attachApplication(application: Application) {
         app = application
         attachBaseContext(application.baseContext)

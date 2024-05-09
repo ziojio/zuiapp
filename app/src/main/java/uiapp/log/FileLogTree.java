@@ -33,7 +33,6 @@ public class FileLogTree extends Timber.DebugTree implements Handler.Callback {
                 file.createNewFile();
             }
             fileWriter = new FileWriter(file, true);
-
             dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS", Locale.US);
             handlerThread = new HandlerThread("FileLog");
             handlerThread.start();
@@ -47,6 +46,15 @@ public class FileLogTree extends Timber.DebugTree implements Handler.Callback {
         if (checkHandler()) {
             String log = dateFormat.format(new Date()) + " " + typeInfo(priority) + " " + tag + ": " + message + "\n";
             handler.sendMessage(Message.obtain(handler, 0, log));
+            // handler.post(() -> {
+            //     if (fileWriter != null) {
+            //         try {
+            //             fileWriter.write(log);
+            //             fileWriter.flush();
+            //         } catch (IOException ignored) {
+            //         }
+            //     }
+            // });
         }
     }
 
@@ -78,7 +86,7 @@ public class FileLogTree extends Timber.DebugTree implements Handler.Callback {
     }
 
     private boolean checkHandler() {
-        if (handler == null && handlerThread != null) {
+        if (handler == null && (handlerThread != null && handlerThread.isAlive())) {
             handler = new Handler(handlerThread.getLooper(), this);
         }
         return handler != null;

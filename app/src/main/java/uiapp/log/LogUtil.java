@@ -4,12 +4,13 @@ import android.content.Context;
 
 import uiapp.UIApp;
 import uiapp.database.room.entity.TrackLog;
-import uiapp.database.room.entity.TrackLogDao;
 import uiapp.util.AsyncTask;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 
@@ -26,17 +27,11 @@ public class LogUtil {
     public static String getLogFileName(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return "timber_" + calendar.get(Calendar.YEAR)
-                + (calendar.get(Calendar.MONTH) + 1)
-                + calendar.get(Calendar.DAY_OF_MONTH) + ".log";
-    }
-
-    private static TrackLogDao trackLogDao() {
-        return UIApp.getDB().trackLogDao();
+        return "timber_" + new SimpleDateFormat("yyyyMMdd", Locale.US).format(date) + ".log";
     }
 
     public static void saveLog(@NonNull TrackLog trackLog) {
-        AsyncTask.doAction(() -> trackLogDao().insert(trackLog));
+        AsyncTask.doAction(() -> UIApp.getDB().trackLogDao().insert(trackLog));
     }
 
 }
