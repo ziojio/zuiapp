@@ -20,10 +20,6 @@ import androidx.core.util.Consumer;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import uiapp.R;
-import uiapp.databinding.ActivityTakePictureBinding;
-import uiapp.ui.base.BaseActivity;
-import uiapp.util.DebugLifecycleObserver;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -33,6 +29,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import timber.log.Timber;
+import uiapp.R;
+import uiapp.databinding.ActivityTakePictureBinding;
+import uiapp.ui.base.BaseActivity;
+import uiapp.util.DebugLifecycleObserver;
 
 public class TakeVideoActivity extends BaseActivity {
     private ActivityTakePictureBinding binding;
@@ -53,7 +53,7 @@ public class TakeVideoActivity extends BaseActivity {
         }
         binding = ActivityTakePictureBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.titlebar.setTitle("视频");
+        binding.titlebar.title.setText("视频");
 
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(() -> {

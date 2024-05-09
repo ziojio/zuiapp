@@ -23,7 +23,7 @@ public class DataBindingActivity extends BaseActivity {
         binding.setModel(bindingViewModel);
         binding.setHandler(new EventHandler());
 
-        binding.titlebar.setTitle("DataBinding");
+        binding.titlebar.title.setText("DataBinding");
 
         binding.execFunction.setOnClickListener(v -> {
             Timber.d("execFunction ");

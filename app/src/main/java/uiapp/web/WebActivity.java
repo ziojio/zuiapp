@@ -7,13 +7,14 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 
-import java.util.concurrent.TimeUnit;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.webkit.WebViewAssetLoader;
 import androidx.webkit.WebViewClientCompat;
 import androidx.webkit.WebViewCompat;
+
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
@@ -120,7 +121,7 @@ public class WebActivity extends BaseActivity {
         @Override
         public void onReceivedTitle(WebView view, String title) {
             super.onReceivedTitle(view, title);
-            runOnUiThread(() -> binding.titlebar.setTitle(title));
+            runOnUiThread(() -> binding.titlebar.title.setText(title));
         }
     }
 }

@@ -16,18 +16,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.common.util.concurrent.ListenableFuture;
-import uiapp.R;
-import uiapp.databinding.ActivityTakePictureBinding;
-import uiapp.ui.base.BaseActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
-import androidz.util.ThreadUtil;
 import timber.log.Timber;
+import uiapp.R;
+import uiapp.databinding.ActivityTakePictureBinding;
+import uiapp.ui.base.BaseActivity;
+
 
 public class TakePictureActivity extends BaseActivity {
     private ActivityTakePictureBinding binding;
@@ -42,7 +43,7 @@ public class TakePictureActivity extends BaseActivity {
         }
         binding = ActivityTakePictureBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.titlebar.setTitle("拍照");
+        binding.titlebar.title.setText("拍照");
 
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd-HHmmss", Locale.CHINA);
         binding.takePicture.setImageResource(R.drawable.ic_camera);
@@ -53,7 +54,7 @@ public class TakePictureActivity extends BaseActivity {
                         new ImageCapture.OutputFileOptions.Builder(imgFile);
 
                 imageCapture.takePicture(outputFileOptions.build(),
-                        ThreadUtil.getExecutor(), new ImageCapture.OnImageSavedCallback() {
+                        Executors.newSingleThreadExecutor(), new ImageCapture.OnImageSavedCallback() {
                             @Override
                             public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                                 Timber.d("onImageSaved: " + outputFileResults.getSavedUri());

@@ -6,7 +6,7 @@ import org.reactivestreams.Subscription;
 
 import java.util.concurrent.TimeUnit;
 
-import androidz.util.ThreadUtil;
+import androidz.util.Androidz;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.BackpressureStrategy;
@@ -36,6 +36,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 import uiapp.databinding.ActivityRxjavaBinding;
 import uiapp.ui.base.BaseActivity;
+
 
 public class RxJavaActivity extends BaseActivity {
 
@@ -123,12 +124,12 @@ public class RxJavaActivity extends BaseActivity {
     }
 
     private void observable() {
-        Timber.d("observable " + Thread.currentThread() + " isMainThread: " + ThreadUtil.isMainThread());
+        Timber.d("observable " + Thread.currentThread() + " isMainThread: " + Androidz.isMainThread());
         Observable.create(new ObservableOnSubscribe<String>() {
                     @Override
                     public void subscribe(@NonNull ObservableEmitter<String> emitter) throws Throwable {
                         Timber.d("subscribe ");
-                        Timber.d(Thread.currentThread() + " isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d(Thread.currentThread() + " isMainThread: " + Androidz.isMainThread());
 
                         emitter.onNext("A");
                         Thread.sleep(200);
@@ -149,7 +150,7 @@ public class RxJavaActivity extends BaseActivity {
                     @Override
                     public void onNext(String s) {
                         Timber.d("onNext " + s);
-                        Timber.d(Thread.currentThread() + " isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d(Thread.currentThread() + " isMainThread: " + Androidz.isMainThread());
                     }
 
                     @Override
@@ -169,7 +170,7 @@ public class RxJavaActivity extends BaseActivity {
                     @Override
                     public void subscribe(@NonNull FlowableEmitter<String> emitter) throws Throwable {
                         Timber.d("subscribe ");
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
 
                         emitter.onNext("A");
                         Thread.sleep(200);
@@ -196,7 +197,7 @@ public class RxJavaActivity extends BaseActivity {
                     @Override
                     public void onNext(String s) {
                         Timber.d("onNext " + s);
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
                     }
 
                     @Override
@@ -235,7 +236,7 @@ public class RxJavaActivity extends BaseActivity {
 
                     @Override
                     public void onNext(@NonNull Long integer) {
-                        Timber.d("onNext " + integer + " isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("onNext " + integer + " isMainThread: " + Androidz.isMainThread());
                     }
 
                     @Override
@@ -256,7 +257,7 @@ public class RxJavaActivity extends BaseActivity {
         Observable.range(1, 10)
                 .subscribeOn(Schedulers.computation())
                 .map(v -> {
-                    Timber.d("map isMainThread: " + ThreadUtil.isMainThread());
+                    Timber.d("map isMainThread: " + Androidz.isMainThread());
                     return v * v;
                 })
                 .subscribe(new Observer<>() {
@@ -266,7 +267,7 @@ public class RxJavaActivity extends BaseActivity {
 
                     @Override
                     public void onNext(@NonNull Integer integer) {
-                        Timber.d("onNext " + integer + " isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("onNext " + integer + " isMainThread: " + Androidz.isMainThread());
                     }
 
                     @Override
@@ -287,7 +288,7 @@ public class RxJavaActivity extends BaseActivity {
                     @Override
                     public void subscribe(@NonNull MaybeEmitter<String> emitter) throws Throwable {
                         Timber.d("subscribe ");
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
                         // emitter.onSuccess("A");
                         emitter.onComplete();
                     }
@@ -301,7 +302,7 @@ public class RxJavaActivity extends BaseActivity {
                     @Override
                     public void onSuccess(@NonNull String s) {
                         Timber.d("onSuccess " + s);
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
                     }
 
                     @Override
@@ -322,7 +323,7 @@ public class RxJavaActivity extends BaseActivity {
                     @Override
                     public void subscribe(@NonNull SingleEmitter<String> emitter) {
                         Timber.d("subscribe ");
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
                         emitter.onSuccess("single-item");
                     }
                 })
@@ -334,13 +335,13 @@ public class RxJavaActivity extends BaseActivity {
                     @Override
                     public void onSuccess(@NonNull String s) {
                         Timber.d("onSuccess " + s);
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Timber.d(e);
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
                     }
                 });
     }
@@ -349,7 +350,7 @@ public class RxJavaActivity extends BaseActivity {
         Timber.d("execute");
         Completable.fromRunnable(() -> {
                     Timber.d("Completable fromRunnable");
-                    Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                    Timber.d("isMainThread: " + Androidz.isMainThread());
                     throw new IllegalStateException("Completable Error");
                 })
                 .observeOn(Schedulers.io())
@@ -362,13 +363,13 @@ public class RxJavaActivity extends BaseActivity {
                     @Override
                     public void onComplete() {
                         Timber.d("Done!");
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         Timber.d(e, "onError");
-                        Timber.d("isMainThread: " + ThreadUtil.isMainThread());
+                        Timber.d("isMainThread: " + Androidz.isMainThread());
                     }
                 });
     }

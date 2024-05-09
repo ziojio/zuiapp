@@ -16,11 +16,10 @@ import androidx.dynamicanimation.animation.FlingAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
-import uiapp.databinding.ActivityAnimationBinding;
-import uiapp.ui.base.BaseActivity;
-
 import androidz.util.AnimateUtil;
 import timber.log.Timber;
+import uiapp.databinding.ActivityAnimationBinding;
+import uiapp.ui.base.BaseActivity;
 
 public class AnimationActivity extends BaseActivity {
     private ActivityAnimationBinding binding;
@@ -30,7 +29,7 @@ public class AnimationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAnimationBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.titlebar.setTitle("Animation");
+        binding.titlebar.title.setText("Animation");
 
         binding.dot.setOnClickListener(v -> {
             SpringForce springForce = new SpringForce(1)

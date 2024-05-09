@@ -13,13 +13,12 @@ import android.view.SurfaceView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import uiapp.databinding.ActivityCameraBinding;
-import uiapp.ui.base.BaseActivity;
-
 import java.io.IOException;
 import java.util.List;
 
 import timber.log.Timber;
+import uiapp.databinding.ActivityCameraBinding;
+import uiapp.ui.base.BaseActivity;
 
 public class CameraActivity extends BaseActivity implements SurfaceHolder.Callback, Camera.PreviewCallback {
     private Camera mCamera;
@@ -32,7 +31,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         }
         ActivityCameraBinding binding = ActivityCameraBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.titlebar.setTitle("相机");
+        binding.titlebar.title.setText("相机");
 
         SurfaceView surfaceView = binding.surfaceView;
         surfaceView.getHolder().addCallback(this);

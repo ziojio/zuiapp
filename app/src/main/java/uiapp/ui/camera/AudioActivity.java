@@ -18,16 +18,16 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import uiapp.databinding.ActivityAudioBinding;
-import uiapp.ui.base.BaseActivity;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executors;
 
-import androidz.util.ThreadUtil;
 import timber.log.Timber;
+import uiapp.databinding.ActivityAudioBinding;
+import uiapp.ui.base.BaseActivity;
+
 
 public class AudioActivity extends BaseActivity implements View.OnClickListener {
     private ActivityAudioBinding binding;
@@ -45,7 +45,7 @@ public class AudioActivity extends BaseActivity implements View.OnClickListener 
         }
         binding = ActivityAudioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.titlebar.setTitle("录音");
+        binding.titlebar.title.setText("录音");
 
         AudioManager mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
@@ -78,17 +78,19 @@ public class AudioActivity extends BaseActivity implements View.OnClickListener 
     private void record() {
         Timber.i("record");
         if (audioRecord == null) {
-            audioRecord = new AudioRecord.Builder()
-                    .setAudioSource(MediaRecorder.AudioSource.MIC)
-                    .setAudioFormat(new AudioFormat.Builder()
-                            .setEncoding(audioFormat)
-                            .setSampleRate(sampleRateHz)
-                            .setChannelMask(channelConfig)
-                            .build())
-                    .setBufferSizeInBytes(bufferSize * 2)
-                    .build();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                audioRecord = new AudioRecord.Builder()
+                        .setAudioSource(MediaRecorder.AudioSource.MIC)
+                        .setAudioFormat(new AudioFormat.Builder()
+                                .setEncoding(audioFormat)
+                                .setSampleRate(sampleRateHz)
+                                .setChannelMask(channelConfig)
+                                .build())
+                        .setBufferSizeInBytes(bufferSize * 2)
+                        .build();
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                audioRecord.registerAudioRecordingCallback(ThreadUtil.getExecutor(), new AudioManager.AudioRecordingCallback() {
+                audioRecord.registerAudioRecordingCallback(Executors.newSingleThreadExecutor(), new AudioManager.AudioRecordingCallback() {
                     @Override
                     public void onRecordingConfigChanged(List<AudioRecordingConfiguration> configs) {
                         super.onRecordingConfigChanged(configs);
@@ -97,7 +99,7 @@ public class AudioActivity extends BaseActivity implements View.OnClickListener 
                 });
             }
         }
-        if (audioRecord.getRecordingState() == AudioRecord.RECORDSTATE_STOPPED) {
+        if (audioRecord != null && audioRecord.getRecordingState() == AudioRecord.RECORDSTATE_STOPPED) {
             audioRecord.startRecording();
             readAudio();
         }

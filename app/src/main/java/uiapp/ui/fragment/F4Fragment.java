@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import timber.log.Timber;
 import uiapp.databinding.ActivityFuncBinding;
 import uiapp.ui.base.MultiFragment;
@@ -18,12 +19,10 @@ public class F4Fragment extends MultiFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ActivityFuncBinding binding = ActivityFuncBinding.inflate(inflater, container, false);
 
-        binding.titlebar.setTitle(getClass().getSimpleName());
-        binding.titlebar.setLeftClickListener(v -> pop());
+        binding.titlebar.title.setText(getClass().getSimpleName());
+        binding.titlebar.left.setOnClickListener(v -> pop());
 
-        binding.execFunction.setOnClickListener(v -> {
-            Timber.d("execFunction");
-        });
+        binding.execFunction.setOnClickListener(v -> Timber.d("execFunction"));
         return binding.getRoot();
     }
 
