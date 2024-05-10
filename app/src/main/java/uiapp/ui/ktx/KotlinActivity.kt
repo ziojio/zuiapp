@@ -3,6 +3,7 @@ package uiapp.ui.ktx
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidz.util.App
 import timber.log.Timber
 import uiapp.databinding.ActivityKtBinding
 import uiapp.ui.base.BaseActivity

@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.lang.reflect.Field;
-import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -22,13 +22,15 @@ import androidz.app.LoadingDialog;
 import composex.ui.ComposeActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
-import uiapp.R;
 import uiapp.databinding.ActivityHomeBinding;
+import uiapp.databinding.ItemHomeFunBinding;
 import uiapp.di.MainHandler;
 import uiapp.ui.activity.AnimationActivity;
 import uiapp.ui.activity.DataBaseActivity;
 import uiapp.ui.activity.RxJavaActivity;
 import uiapp.ui.activity.WebSocketActivity;
+import uiapp.ui.adapter.BaseAdapter;
+import uiapp.ui.adapter.BindingViewHolder;
 import uiapp.ui.base.BaseFragment;
 import uiapp.ui.databinding.DataBindingActivity;
 import uiapp.ui.edit.EditActivity;
@@ -39,10 +41,26 @@ import uiapp.util.KeyboardWatcher;
 import uiapp.web.WebActivity;
 
 @AndroidEntryPoint
-public class HomeFragment extends BaseFragment implements View.OnClickListener {
+public class HomeFragment extends BaseFragment {
+    private static final String execute = "execute";
+    private static final String popup = "popup";
+    private static final String snackbar = "snackbar";
+    private static final String webview = "webview";
+    private static final String database = "database";
+    private static final String dialog = "dialog";
+    private static final String compose = "compose";
+    private static final String http = "http";
+    private static final String ktx = "ktx";
+    private static final String animation = "animation";
+    private static final String dataBinding = "dataBinding";
+    private static final String edit = "edit";
+    private static final String rxJava = "rxJava";
+    private static final String paging = "paging";
+    private static final String webSocket = "webSocket";
 
     @Inject
     MainHandler mHandler;
+    HomePopupWindow popupWindow;
 
     @Nullable
     @Override
@@ -55,37 +73,84 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
         ActivityHomeBinding binding = ActivityHomeBinding.bind(view);
 
-        Arrays.asList(binding.snackbar, binding.webview,
-                binding.database, binding.dialog,
-                binding.compose, binding.http, binding.ktx,
-                binding.animation, binding.dataBinding,
-                binding.edit, binding.rxJava, binding.paging,
-                binding.webSocket).forEach(v -> v.setOnClickListener(this));
+        String[] strings = new String[]{
+                execute, snackbar, popup,
+                database, dialog, compose,
+                animation, dataBinding, edit,
+                http, ktx, rxJava,
+                webview, paging, webSocket
+        };
+        binding.recyclerview.addItemDecoration(new DividerItemDecoration(requireActivity(), DividerItemDecoration.VERTICAL));
+        binding.recyclerview.setAdapter(new BaseAdapter<String, BindingViewHolder<ItemHomeFunBinding>>(strings) {
 
-        binding.execFunction.setOnClickListener(v -> {
-            Timber.d("execFunction");
-            logBuildInfo();
-
-            if (v instanceof TextView tv) {
-                tv.append("...");
+            @NonNull
+            @Override
+            public BindingViewHolder<ItemHomeFunBinding> onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                LayoutInflater inflater = LayoutInflater.from(getActivity());
+                return new BindingViewHolder<>(ItemHomeFunBinding.inflate(inflater, parent, false));
             }
-        });
-        binding.edit.setOnClickListener(v -> {
-            binding.keyboard
-                    .setEditText(binding.editText)
-                    .setNineGridNumber()
-                    .show();
-        });
-        binding.popup.setOnClickListener(new View.OnClickListener() {
-            HomePopupWindow popupWindow;
 
             @Override
-            public void onClick(View v) {
-                if (popupWindow == null) {
-                    popupWindow = new HomePopupWindow(requireActivity());
-                }
-                popupWindow.showPopupWindow(v);
-                // popupWindow.showPopupWindow(100, 100);
+            public void onBindViewHolder(@NonNull BindingViewHolder<ItemHomeFunBinding> holder, int position) {
+                String cmd = getItem(position);
+                TextView textView = holder.binding.execute;
+                textView.setText(cmd);
+                textView.setOnClickListener(v -> {
+                    switch (cmd) {
+                        case execute -> {
+                            Timber.d("execute");
+                            // logBuildInfo();
+
+                            textView.setText(android.R.string.ok);
+                        }
+                        case snackbar -> {
+                            showSnackbar(textView);
+                        }
+                        case popup -> {
+                            if (popupWindow == null) {
+                                popupWindow = new HomePopupWindow(requireActivity());
+                            }
+                            popupWindow.showPopupWindow(holder.itemView);
+                            // popupWindow.showPopupWindow(100, 100);
+                        }
+                        case webview -> {
+                            startActivity(new Intent(requireActivity(), WebActivity.class));
+                        }
+                        case database -> {
+                            startActivity(new Intent(requireActivity(), DataBaseActivity.class));
+                        }
+                        case dialog -> {
+                            new LoadingDialog(requireActivity()).show();
+                        }
+                        case compose -> {
+                            startActivity(new Intent(requireActivity(), ComposeActivity.class));
+                        }
+                        case http -> {
+                            startActivity(new Intent(requireActivity(), HttpActivity.class));
+                        }
+                        case ktx -> {
+                            startActivity(new Intent(requireActivity(), KotlinActivity.class));
+                        }
+                        case animation -> {
+                            startActivity(new Intent(requireActivity(), AnimationActivity.class));
+                        }
+                        case dataBinding -> {
+                            startActivity(new Intent(requireActivity(), DataBindingActivity.class));
+                        }
+                        case edit -> {
+                            startActivity(new Intent(requireActivity(), EditActivity.class));
+                        }
+                        case rxJava -> {
+                            startActivity(new Intent(requireActivity(), RxJavaActivity.class));
+                        }
+                        case paging -> {
+                            startActivity(new Intent(requireActivity(), Paging3Activity.class));
+                        }
+                        case webSocket -> {
+                            startActivity(new Intent(requireActivity(), WebSocketActivity.class));
+                        }
+                    }
+                });
             }
         });
 
@@ -100,38 +165,6 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
                 Timber.d("onSoftKeyboardClosed");
             }
         });
-    }
-
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id == R.id.webview) {
-            startActivity(new Intent(requireActivity(), WebActivity.class));
-        } else if (id == R.id.compose) {
-            startActivity(new Intent(requireActivity(), ComposeActivity.class));
-        } else if (id == R.id.ktx) {
-            startActivity(new Intent(requireActivity(), KotlinActivity.class));
-        } else if (id == R.id.database) {
-            startActivity(new Intent(requireActivity(), DataBaseActivity.class));
-        } else if (id == R.id.http) {
-            startActivity(new Intent(requireActivity(), HttpActivity.class));
-        } else if (id == R.id.webSocket) {
-            startActivity(new Intent(requireActivity(), WebSocketActivity.class));
-        } else if (id == R.id.dataBinding) {
-            startActivity(new Intent(requireActivity(), DataBindingActivity.class));
-        } else if (id == R.id.animation) {
-            startActivity(new Intent(requireActivity(), AnimationActivity.class));
-        } else if (id == R.id.rxJava) {
-            startActivity(new Intent(requireActivity(), RxJavaActivity.class));
-        } else if (id == R.id.edit) {
-            startActivity(new Intent(requireActivity(), EditActivity.class));
-        } else if (id == R.id.paging) {
-            startActivity(new Intent(requireActivity(), Paging3Activity.class));
-        } else if (id == R.id.snackbar) {
-            showSnackbar(v);
-        } else if (id == R.id.dialog) {
-            new LoadingDialog(requireActivity()).show();
-        }
     }
 
     private void showSnackbar(View v) {

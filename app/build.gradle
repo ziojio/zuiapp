@@ -67,7 +67,7 @@ dependencies {
     implementation project(':composex')
     implementation project(':hummerx')
 
-    implementation "com.github.ziojio:androidz:5.0"
+    implementation "com.github.ziojio:androidz:5.1"
 
     // noinspection UseTomlInstead
     implementation 'com.tencent:mmkv:1.3.4'

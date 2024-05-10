@@ -30,9 +30,9 @@
             android:drawableTop="@drawable/ic_home"
             android:drawableTint="@color/selector_home_nav"
             android:gravity="center"
-            android:text="Home"
+            android:text="@string/home"
             android:textColor="@color/selector_home_nav"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp_10" />
 
         <RadioButton
             android:id="@+id/function"
@@ -44,8 +44,8 @@
             android:drawableTop="@drawable/ic_dashboard"
             android:drawableTint="@color/selector_home_nav"
             android:gravity="center"
-            android:text="Function"
+            android:text="@string/function"
             android:textColor="@color/selector_home_nav"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp_10" />
     </RadioGroup>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package uiapp.ui.activity;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
@@ -16,10 +17,22 @@ import uiapp.ui.fragment.homepage.HomeFragment;
 
 @AndroidEntryPoint
 public class MainActivity extends BaseActivity {
+    private int count = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         SplashScreen splashScreen = SplashScreen.installSplashScreen(this);
+        new CountDownTimer(count * 1000L, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+            }
+
+            @Override
+            public void onFinish() {
+                count = 0;
+            }
+        }.start();
+        splashScreen.setKeepOnScreenCondition(() -> count > 0);
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

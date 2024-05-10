@@ -5,12 +5,14 @@ import android.content.pm.ApplicationInfo;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.util.Date;
 
-import androidx.annotation.NonNull;
+import androidz.util.App;
 import androidz.util.AppUtil;
 import dagger.hilt.android.HiltAndroidApp;
 import timber.log.Timber;
@@ -18,7 +20,6 @@ import uiapp.database.room.AppDB;
 import uiapp.database.room.entity.TrackLog;
 import uiapp.log.FileLogTree;
 import uiapp.log.LogUtil;
-import uiapp.ui.ktx.App;
 
 
 @HiltAndroidApp
@@ -38,7 +39,6 @@ public class UIApp extends Application {
     public void onCreate() {
         super.onCreate();
         uiApp = this;
-        App.INSTANCE.attachApplication(this);
 
         Log.d("UIApp", "onCreate " + this);
         long start = SystemClock.elapsedRealtime();
@@ -60,9 +60,6 @@ public class UIApp extends Application {
 
         Timber.d("onCreate " + App.INSTANCE);
         Timber.d("onCreate " + App.INSTANCE.isDebuggable());
-        Timber.d("onCreate " + App.INSTANCE.getApplicationInfo());
-        Timber.d("onCreate " + App.INSTANCE.getPackageInfo());
-        Timber.d("onCreate " + App.INSTANCE.getGlobalData());
     }
 
     public static boolean debuggable() {
