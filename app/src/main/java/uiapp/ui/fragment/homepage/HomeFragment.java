@@ -99,9 +99,8 @@ public class HomeFragment extends BaseFragment {
                     switch (cmd) {
                         case execute -> {
                             Timber.d("execute");
-                            // logBuildInfo();
-
-                            textView.setText(android.R.string.ok);
+                            // textView.setText(android.R.string.ok);
+                            logBuildInfo();
                         }
                         case snackbar -> {
                             showSnackbar(textView);
