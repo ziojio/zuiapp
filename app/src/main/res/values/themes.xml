@@ -3,23 +3,32 @@
     <style name="Base.Theme.UIApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <item name="colorPrimary">@color/primary_color</item>
-        <item name="colorOnPrimary">#ffffff</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/secondary_color</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <item name="android:colorPrimary">?attr/colorPrimary</item>
+        <item name="android:textColorPrimary">#333333</item>
 
         <item name="colorSurfaceInverse">#FFC107</item>
         <item name="colorOnSurfaceInverse">#FFFFFF</item>
         <item name="colorPrimaryInverse">#000000</item>
 
         <item name="android:windowBackground">@color/window_background_color</item>
-        <item name="android:selectableItemBackground">@drawable/selectable_item_background</item>
-        <item name="android:overScrollMode">never</item>
+        <item name="selectableItemBackground">@drawable/selectable_item_background</item>
+        <item name="android:selectableItemBackground">?attr/selectableItemBackground</item>
+        <item name="actionBarSize">@dimen/dp_48</item>
+        <item name="android:actionBarSize">?attr/actionBarSize</item>
+        <item name="dialogCornerRadius">10dp</item>
 
         <item name="android:textViewStyle">@style/TextStyle</item>
-        <item name="android:editTextStyle">@style/EditTextStyle</item>
-        <item name="android:buttonStyle">@style/ButtonStyle</item>
+        <item name="editTextStyle">@style/EditTextStyle</item>
+        <item name="android:editTextStyle">?attr/editTextStyle</item>
+        <item name="buttonStyle">@style/ButtonStyle</item>
+        <item name="android:buttonStyle">?attr/buttonStyle</item>
         <item name="android:listDivider">@drawable/divider_line</item>
+        <item name="android:overScrollMode">never</item>
 
-        <item name="actionBarSize">@dimen/dp_48</item>
-        <item name="dialogCornerRadius">10dp</item>
     </style>
 
     <style name="Theme.UIApp" parent="Base.Theme.UIApp">

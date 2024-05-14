@@ -16,10 +16,11 @@ import androidx.dynamicanimation.animation.FlingAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 
-import androidz.util.AnimateUtil;
+import androidz.AnimateUtil;
 import timber.log.Timber;
 import uiapp.databinding.ActivityAnimationBinding;
 import uiapp.ui.base.BaseActivity;
+
 
 public class AnimationActivity extends BaseActivity {
     private ActivityAnimationBinding binding;

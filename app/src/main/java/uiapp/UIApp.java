@@ -12,8 +12,8 @@ import com.tencent.mmkv.MMKV;
 import java.io.File;
 import java.util.Date;
 
-import androidz.util.App;
-import androidz.util.AppUtil;
+import androidz.App;
+import androidz.AppUtil;
 import dagger.hilt.android.HiltAndroidApp;
 import timber.log.Timber;
 import uiapp.database.room.AppDB;

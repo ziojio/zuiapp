@@ -6,7 +6,7 @@ import org.reactivestreams.Subscription;
 
 import java.util.concurrent.TimeUnit;
 
-import androidz.util.Androidz;
+import androidz.Androidz;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.BackpressureStrategy;

@@ -1,10 +1,10 @@
 package hummerx.ui;
 
+import androidx.annotation.NonNull;
 
 import com.didi.hummer.context.HummerContext;
 import com.didi.hummer.core.engine.JSValue;
 
-import androidx.annotation.NonNull;
 
 public class HummerActivity extends com.didi.hummer.HummerActivity {
 

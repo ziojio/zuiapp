@@ -9,9 +9,11 @@
     <!--  矢量图标的默认大小  -->
     <dimen name="common_icon_size">24dp</dimen>
     <!--  分割线粗细 -->
-    <dimen name="line_size">0.3dp</dimen>
+    <dimen name="line_size">0.325dp</dimen>
     <!-- 按钮圆形圆角 -->
-    <dimen name="button_corner_size">8dp</dimen>
-    <dimen name="button_circle_size">999dp</dimen>
+    <dimen name="small_corner_size">4dp</dimen>
+    <dimen name="medium_corner_size">8dp</dimen>
+    <dimen name="large_corner_size">12dp</dimen>
+    <dimen name="circle_corner_size">999dp</dimen>
 
 </resources>

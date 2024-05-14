@@ -5,8 +5,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidz.util.AdaptScreenUtils;
-import androidz.util.ScreenUtil;
+import androidz.AdaptScreenUtils;
+import androidz.ScreenUtil;
 import uiapp.UIApp;
 
 

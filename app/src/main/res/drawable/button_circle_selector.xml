@@ -4,7 +4,7 @@
     <!-- 禁用状态 -->
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/button_circle_size" />
+            <corners android:radius="@dimen/circle_corner_size" />
             <solid android:color="@color/common_button_disable_color" />
         </shape>
     </item>
@@ -12,7 +12,7 @@
     <!-- 按压状态 -->
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/button_circle_size" />
+            <corners android:radius="@dimen/circle_corner_size" />
             <solid android:color="@color/common_button_pressed_color" />
         </shape>
     </item>
@@ -20,7 +20,7 @@
     <!-- 焦点状态 -->
     <item android:state_focused="true">
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/button_circle_size" />
+            <corners android:radius="@dimen/circle_corner_size" />
             <solid android:color="@color/common_button_pressed_color" />
         </shape>
     </item>
@@ -28,7 +28,7 @@
     <!-- 默认状态 -->
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/button_circle_size" />
+            <corners android:radius="@dimen/circle_corner_size" />
             <solid android:color="@color/common_button_color" />
         </shape>
     </item>

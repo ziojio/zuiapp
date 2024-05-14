@@ -18,7 +18,7 @@ import java.lang.reflect.Field;
 
 import javax.inject.Inject;
 
-import androidz.app.LoadingDialog;
+import androidz.LoadingDialog;
 import composex.ui.ComposeActivity;
 import dagger.hilt.android.AndroidEntryPoint;
 import timber.log.Timber;
@@ -99,7 +99,8 @@ public class HomeFragment extends BaseFragment {
                     switch (cmd) {
                         case execute -> {
                             Timber.d("execute");
-                            // textView.setText(android.R.string.ok);
+                            textView.setText(android.R.string.ok);
+                            textView.setText(androidz.R.string.loading_message);
                             logBuildInfo();
                         }
                         case snackbar -> {
