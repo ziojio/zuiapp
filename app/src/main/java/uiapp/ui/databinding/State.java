@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.databinding.ObservableField;
 
 /**
- * Add debounce, logic is similar to superclass
+ * Logic is similar to superclass
  */
 public class State<T> extends ObservableField<T> {
     private final boolean isDebouncing;

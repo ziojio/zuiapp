@@ -20,7 +20,7 @@ import uiapp.database.room.AppDB;
 import uiapp.database.room.entity.TrackLog;
 import uiapp.log.FileLogTree;
 import uiapp.log.LogUtil;
-
+import uiapp.ui.ktx.AppCache;
 
 @HiltAndroidApp
 public class UIApp extends Application {
@@ -56,10 +56,12 @@ public class UIApp extends Application {
         appDB = AppDB.create(this);
 
         long time = SystemClock.elapsedRealtime() - start;
-        Timber.d("init cost time " + time + "ms");
+        Log.d("UIApp", "init cost time " + time + "ms");
+        AppCache.set("AAA", "aaa");
+        String a = (String) AppCache.get("A");
 
-        Timber.d("onCreate " + App.INSTANCE);
-        Timber.d("onCreate " + App.INSTANCE.isDebuggable());
+        Timber.d("onCreate isDebuggable " + App.INSTANCE.isDebuggable());
+        Timber.d("onCreate globalData " + App.globalData);
     }
 
     public static boolean debuggable() {
