@@ -65,7 +65,7 @@ public class AnimationActivity extends BaseActivity {
 
     private void circularReveal(View view) {
         if (view.getVisibility() == View.GONE) {
-            AnimateUtil.circularRevealIn(view);
+            AnimateUtil.circularRevealIn(view, 300);
             AnimateUtil.fadeIn(view);
         } else {
             AnimateUtil.circularRevealOut(view);

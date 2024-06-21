@@ -28,6 +28,7 @@
         android:layout_marginEnd="@dimen/dp_16"
         android:padding="@dimen/dp_4"
         android:visibility="gone"
+        tools:visibility="visible"
         tools:text="Right" />
 
     <View

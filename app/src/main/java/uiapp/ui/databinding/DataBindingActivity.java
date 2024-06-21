@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModelProvider;
 
 import timber.log.Timber;
@@ -13,6 +14,19 @@ import uiapp.ui.base.BaseActivity;
 
 
 public class DataBindingActivity extends BaseActivity {
+
+    private final State<String> state = new State<>();
+    private final State<Boolean> state2 = new State<>(false, false);
+    private final ObservableField<String> state3 = new ObservableField<>() {
+        @Override
+        public void set(String value) {
+            boolean isUnChanged = this.get() == value;
+            super.set(value);
+            if (isUnChanged) {
+                this.notifyChange();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
