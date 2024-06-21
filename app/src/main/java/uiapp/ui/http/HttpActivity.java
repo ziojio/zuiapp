@@ -3,11 +3,13 @@ package uiapp.ui.http;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -91,12 +93,12 @@ public class HttpActivity extends BaseActivity {
 
             @Override
             public void onSuccess(JsonElement body) {
-                binding.text.setText(body.toString());
+                binding.text.setText(new GsonBuilder().setPrettyPrinting().create().toJson(body));
             }
 
             @Override
-            public void onError(int errCode, String errMsg) {
-                binding.text.setText(String.format(Locale.getDefault(), "code=%d, msg=%s", errCode, errMsg));
+            public void onError(int code, String message) {
+                binding.text.setText(String.format(Locale.getDefault(), "code=%d, message=%s", code, message));
             }
         });
     }
@@ -108,7 +110,7 @@ public class HttpActivity extends BaseActivity {
                 Log.d("TAG", "onNext: " + jsonElement);
                 try {
                     String result = jsonElement.toString();
-                    binding.text.setText(result);
+                    binding.text.setText(new GsonBuilder().setPrettyPrinting().create().toJson(jsonElement));
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
@@ -121,8 +123,8 @@ public class HttpActivity extends BaseActivity {
             }
 
             @Override
-            public void onError(int errCode, String errMsg) {
-                binding.text.setText(errMsg);
+            public void onError(int code, String message) {
+                binding.text.setText(String.format(Locale.getDefault(), "code=%d, message=%s", code, message));
             }
         };
         apiService.getJson(url)

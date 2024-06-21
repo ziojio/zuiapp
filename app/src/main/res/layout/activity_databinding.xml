@@ -27,9 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:background="@color/deep_purple_100"
-            android:orientation="vertical"
-            android:padding="20dp"
-            app:dividerDrawable="@drawable/divider_space_20dp"
+            android:padding="10dp"
+            app:dividerDrawable="@drawable/divider_space_10dp"
             app:flexWrap="wrap"
             app:showDivider="middle">
 
@@ -51,8 +50,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:background="@color/amber_100"
-            android:padding="16dp"
+            android:background="@drawable/border"
+            android:padding="10dp"
             app:dividerDrawable="@drawable/divider_space_20dp"
             app:flexWrap="wrap"
             app:showDivider="middle">

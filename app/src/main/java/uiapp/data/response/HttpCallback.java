@@ -2,6 +2,8 @@ package uiapp.data.response;
 
 import android.net.ParseException;
 
+import androidx.annotation.NonNull;
+
 import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
@@ -13,7 +15,6 @@ import java.net.UnknownHostException;
 
 import javax.net.ssl.SSLException;
 
-import androidx.annotation.NonNull;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.HttpException;
@@ -78,6 +79,6 @@ public abstract class HttpCallback<T> implements Callback<T> {
 
     public abstract void onSuccess(T t);
 
-    public abstract void onError(int errCode, String errMsg);
+    public abstract void onError(int code, String message);
 
 }

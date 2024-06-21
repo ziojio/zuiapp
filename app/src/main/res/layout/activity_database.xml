@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        app:dividerDrawable="@drawable/divider_space_20dp"
+        app:dividerDrawable="@drawable/divider_space_10dp"
         app:flexWrap="wrap"
         app:showDivider="middle">
 
@@ -47,7 +47,7 @@
         android:id="@+id/text_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@color/amber_100"
+        android:layout_margin="16dp"
+        android:background="@drawable/border"
         android:padding="10dp" />
 </LinearLayout>

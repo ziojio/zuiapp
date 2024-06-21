@@ -66,6 +66,6 @@ public abstract class BaseObserver<T> extends DisposableObserver<T> {
     public void onComplete() {
     }
 
-    public abstract void onError(int errCode, String errMsg);
+    public abstract void onError(int code, String message);
 
 }

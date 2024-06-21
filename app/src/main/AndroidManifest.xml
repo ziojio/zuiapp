@@ -73,7 +73,7 @@
         <activity android:name="uiapp.ui.activity.RxJavaActivity" />
         <activity android:name="uiapp.ui.activity.AnimationActivity" />
         <activity android:name="uiapp.ui.activity.WebSocketActivity" />
-        <activity android:name="uiapp.ui.activity.WaterMarkActivity" />
+        <!-- <activity android:name="uiapp.ui.activity.WaterMarkActivity" /> -->
         <activity android:name="uiapp.ui.activity.AidlActivity" />
 
         <activity android:name="uiapp.ui.camera.TakePictureActivity" />
